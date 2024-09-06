@@ -14,6 +14,10 @@
 		296C95542C8B116600B39A10 /* UStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C95532C8B116600B39A10 /* UStoreTests.swift */; };
 		296C955E2C8B116600B39A10 /* UStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C955D2C8B116600B39A10 /* UStoreUITests.swift */; };
 		296C95602C8B116600B39A10 /* UStoreUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C955F2C8B116600B39A10 /* UStoreUITestsLaunchTests.swift */; };
+		296C96102C8B2A1800B39A10 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 296C960F2C8B2A1800B39A10 /* Launch Screen.storyboard */; };
+		296C96122C8B2B4600B39A10 /* SignIn_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96112C8B2B4600B39A10 /* SignIn_Screen.swift */; };
+		296C96142C8B2DEA00B39A10 /* SignUp_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96132C8B2DEA00B39A10 /* SignUp_Screen.swift */; };
+		296C96162C8B2E0400B39A10 /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96152C8B2E0400B39A10 /* ResetPassword.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		296C95592C8B116600B39A10 /* UStoreUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UStoreUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		296C955D2C8B116600B39A10 /* UStoreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UStoreUITests.swift; sourceTree = "<group>"; };
 		296C955F2C8B116600B39A10 /* UStoreUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UStoreUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		296C960F2C8B2A1800B39A10 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		296C96112C8B2B4600B39A10 /* SignIn_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn_Screen.swift; sourceTree = "<group>"; };
+		296C96132C8B2DEA00B39A10 /* SignUp_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp_Screen.swift; sourceTree = "<group>"; };
+		296C96152C8B2E0400B39A10 /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,14 +102,20 @@
 		296C95412C8B116400B39A10 /* UStore */ = {
 			isa = PBXGroup;
 			children = (
+				296C960E2C8B29AD00B39A10 /* StyleGuide */,
+				296C960D2C8B298C00B39A10 /* ErrorHandeling */,
+				296C960C2C8B298100B39A10 /* ApiService */,
+				296C960B2C8B296C00B39A10 /* FirebaseService */,
+				296C960A2C8B295F00B39A10 /* Navigator */,
+				296C96092C8B295500B39A10 /* Enums */,
 				296C96082C8B28E900B39A10 /* Utils */,
 				296C96072C8B282000B39A10 /* Models */,
 				296C96062C8B280D00B39A10 /* ViewModels */,
 				296C96052C8B27DC00B39A10 /* Views */,
 				296C95422C8B116400B39A10 /* UStoreApp.swift */,
-				296C95442C8B116400B39A10 /* ContentView.swift */,
 				296C95462C8B116500B39A10 /* Assets.xcassets */,
 				296C95482C8B116500B39A10 /* Preview Content */,
+				296C960F2C8B2A1800B39A10 /* Launch Screen.storyboard */,
 			);
 			path = UStore;
 			sourceTree = "<group>";
@@ -134,6 +148,10 @@
 		296C96052C8B27DC00B39A10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				296C95442C8B116400B39A10 /* ContentView.swift */,
+				296C96112C8B2B4600B39A10 /* SignIn_Screen.swift */,
+				296C96132C8B2DEA00B39A10 /* SignUp_Screen.swift */,
+				296C96152C8B2E0400B39A10 /* ResetPassword.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -157,6 +175,48 @@
 			children = (
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		296C96092C8B295500B39A10 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		296C960A2C8B295F00B39A10 /* Navigator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Navigator;
+			sourceTree = "<group>";
+		};
+		296C960B2C8B296C00B39A10 /* FirebaseService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FirebaseService;
+			sourceTree = "<group>";
+		};
+		296C960C2C8B298100B39A10 /* ApiService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ApiService;
+			sourceTree = "<group>";
+		};
+		296C960D2C8B298C00B39A10 /* ErrorHandeling */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ErrorHandeling;
+			sourceTree = "<group>";
+		};
+		296C960E2C8B29AD00B39A10 /* StyleGuide */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = StyleGuide;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +323,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				296C96102C8B2A1800B39A10 /* Launch Screen.storyboard in Resources */,
 				296C954A2C8B116500B39A10 /* Preview Assets.xcassets in Resources */,
 				296C95472C8B116500B39A10 /* Assets.xcassets in Resources */,
 			);
@@ -290,7 +351,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				296C95452C8B116400B39A10 /* ContentView.swift in Sources */,
+				296C96122C8B2B4600B39A10 /* SignIn_Screen.swift in Sources */,
+				296C96162C8B2E0400B39A10 /* ResetPassword.swift in Sources */,
 				296C95432C8B116400B39A10 /* UStoreApp.swift in Sources */,
+				296C96142C8B2DEA00B39A10 /* SignUp_Screen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +524,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -489,6 +554,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
