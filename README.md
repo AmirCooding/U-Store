@@ -5,6 +5,7 @@ U-Store is an online shopping application developed using Swift and SwiftUI. It 
 
 # Features
 
+
 ### Authentication:
 - Firebase Authentication for user sign-in and registration.
   
