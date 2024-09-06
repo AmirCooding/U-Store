@@ -23,7 +23,7 @@ U-Store is an online shopping application developed using Swift and SwiftUI. It 
 - Electronics
 - Jewelry
   
-### Favorites:
+### List of Favorites:
 - Users can mark products as favorites to easily access them later.
 
  ### Add to Cart:
