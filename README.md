@@ -129,6 +129,13 @@ git push origin feature/your-feature
 
 - Go to the original repository and open a pull request with a description of your changes.
 
+  
+ ## Design
+
+ <img width="308" alt="Screenshot 2024-09-04 at 09 27 13" src="https://github.com/user-attachments/assets/43b966bd-8f36-4ffb-8e84-536963459ba2">
+
 ## Contact
 - For any questions or feedback, please reach out to amirrllotfi@gmail.com.
+
+
 
