@@ -106,17 +106,17 @@ cd ustore
 ## Contributing
 - Contributions are welcome! Please follow these steps:
 
-### 1.Fork the Repository:
+##### 1.Fork the Repository:
 
 - Click the "Fork" button on GitHub to create your own copy of the repository.
-### 2.Create a Feature Branch:
+#### 2.Create a Feature Branch:
 
 ```bash
 git checkout -b feature/your-feature
 
 ```
 
-### 3.Commit Your Cahnges:
+#### 3.Commit Your Cahnges:
 ```bash
 git commit -am 'Add some feature'
 
@@ -125,7 +125,7 @@ git commit -am 'Add some feature'
 git push origin feature/your-feature
 ```
 
-### 5.Open a Pull Request:
+#### 4.Open a Pull Request:
 
 - Go to the original repository and open a pull request with a description of your changes.
 
