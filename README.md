@@ -106,7 +106,7 @@ cd ustore
 ## Contributing
 - Contributions are welcome! Please follow these steps:
 
-##### 1.Fork the Repository:
+#### 1.Fork the Repository:
 
 - Click the "Fork" button on GitHub to create your own copy of the repository.
 #### 2.Create a Feature Branch:
