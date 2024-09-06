@@ -55,7 +55,7 @@ U-Store is an online shopping application developed using Swift and SwiftUI. It 
 - Credit Card
 - SEPA
   
-### Getting Started
+## Getting Started
 #### To get started with U-Store, follow these steps:
 
 ##### 1.Prerequisites
