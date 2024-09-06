@@ -94,6 +94,9 @@
 		296C95412C8B116400B39A10 /* UStore */ = {
 			isa = PBXGroup;
 			children = (
+				296C96072C8B282000B39A10 /* Models */,
+				296C96062C8B280D00B39A10 /* ViewModels */,
+				296C96052C8B27DC00B39A10 /* Views */,
 				296C95422C8B116400B39A10 /* UStoreApp.swift */,
 				296C95442C8B116400B39A10 /* ContentView.swift */,
 				296C95462C8B116500B39A10 /* Assets.xcassets */,
@@ -125,6 +128,27 @@
 				296C955F2C8B116600B39A10 /* UStoreUITestsLaunchTests.swift */,
 			);
 			path = UStoreUITests;
+			sourceTree = "<group>";
+		};
+		296C96052C8B27DC00B39A10 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		296C96062C8B280D00B39A10 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		296C96072C8B282000B39A10 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
