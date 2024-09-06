@@ -58,7 +58,7 @@ U-Store is an online shopping application developed using Swift and SwiftUI. It 
 ## Getting Started
 #### To get started with U-Store, follow these steps:
 
-##### 1.Prerequisites
+#### 1.Prerequisites
 - Xcode 14 or later
 - A Firebase project with Firestore and Authentication set up
 - Swift 5.7 or later
@@ -75,21 +75,20 @@ cd ustore
 ```
 
 
-### 3.Install Dependencies:
+#### 3.Install Dependencies:
 
 -U-Store uses Swift Package Manager for dependency management. Open the project in Xcode, and the necessary packages will be automatically resolved.
 
-### 4.Configure Firebase:
+#### 4.Configure Firebase:
 
 - Download the GoogleService-Info.plist from your Firebase project settings.
 - Add the GoogleService-Info.plist file to the root of your Xcode project.
-### 5.Run the Application:
+#### 5.Run the Application:
 
 - Open U-Store.xcodeproj in Xcode, and click the run button to build and launch the app on the simulator or a physical device.
 
 ## Usage
 ### Sign In/Register:
-
 - Use Firebase Authentication to create a new account or sign in with an existing account.
 ### Browse Products:
 - Navigate through categories to view available products.
@@ -107,8 +106,8 @@ cd ustore
 - Contributions are welcome! Please follow these steps:
 
 #### 1.Fork the Repository:
-
 - Click the "Fork" button on GitHub to create your own copy of the repository.
+  
 #### 2.Create a Feature Branch:
 
 ```bash
