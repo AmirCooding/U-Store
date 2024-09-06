@@ -94,6 +94,7 @@
 		296C95412C8B116400B39A10 /* UStore */ = {
 			isa = PBXGroup;
 			children = (
+				296C96082C8B28E900B39A10 /* Utils */,
 				296C96072C8B282000B39A10 /* Models */,
 				296C96062C8B280D00B39A10 /* ViewModels */,
 				296C96052C8B27DC00B39A10 /* Views */,
@@ -149,6 +150,13 @@
 			children = (
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		296C96082C8B28E900B39A10 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
