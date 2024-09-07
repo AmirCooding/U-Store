@@ -53,6 +53,8 @@
 		29DD1CAD2C8C69D80001ACC8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29DD1CAC2C8C69D80001ACC8 /* GoogleService-Info.plist */; };
 		29DD1CB02C8C6FD50001ACC8 /* FirbaseAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD1CAF2C8C6FD50001ACC8 /* FirbaseAuthService.swift */; };
 		29DD1CB22C8C70050001ACC8 /* UserAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD1CB12C8C70050001ACC8 /* UserAuth.swift */; };
+		29DD1CB52C8C71110001ACC8 /* UStore_Repositroy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD1CB42C8C71110001ACC8 /* UStore_Repositroy.swift */; };
+		29DD1CBA2C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD1CB92C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +110,8 @@
 		29DD1CAC2C8C69D80001ACC8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		29DD1CAF2C8C6FD50001ACC8 /* FirbaseAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirbaseAuthService.swift; sourceTree = "<group>"; };
 		29DD1CB12C8C70050001ACC8 /* UserAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuth.swift; sourceTree = "<group>"; };
+		29DD1CB42C8C71110001ACC8 /* UStore_Repositroy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UStore_Repositroy.swift; sourceTree = "<group>"; };
+		29DD1CB92C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UStore_RepositoryImpl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +184,7 @@
 		296C95412C8B116400B39A10 /* UStore */ = {
 			isa = PBXGroup;
 			children = (
+				29DD1CB62C8C711B0001ACC8 /* Repository */,
 				296C960E2C8B29AD00B39A10 /* StyleGuide */,
 				296C960D2C8B298C00B39A10 /* ErrorHandeling */,
 				296C960C2C8B298100B39A10 /* ApiService */,
@@ -324,6 +329,15 @@
 				29DD1C732C8B4AAC0001ACC8 /* GilroyFonts.swift */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		29DD1CB62C8C711B0001ACC8 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				29DD1CB42C8C71110001ACC8 /* UStore_Repositroy.swift */,
+				29DD1CB92C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -516,6 +530,7 @@
 				29DD1CB02C8C6FD50001ACC8 /* FirbaseAuthService.swift in Sources */,
 				29DD1C692C8B33480001ACC8 /* Cart_Screen.swift in Sources */,
 				296C95452C8B116400B39A10 /* ContentView.swift in Sources */,
+				29DD1CB52C8C71110001ACC8 /* UStore_Repositroy.swift in Sources */,
 				296C96122C8B2B4600B39A10 /* SignIn_Screen.swift in Sources */,
 				29DD1C652C8B33220001ACC8 /* Explore_Screen.swift in Sources */,
 				296C96162C8B2E0400B39A10 /* ForgetPassword_Screen.swift in Sources */,
@@ -525,6 +540,7 @@
 				296C96142C8B2DEA00B39A10 /* SignUp_Screen.swift in Sources */,
 				29DD1C672C8B333B0001ACC8 /* Favorite_Screen.swift in Sources */,
 				29DD1C6B2C8B33680001ACC8 /* Account_Screen.swift in Sources */,
+				29DD1CBA2C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift in Sources */,
 				29DD1CB22C8C70050001ACC8 /* UserAuth.swift in Sources */,
 				29DD1C742C8B4AAC0001ACC8 /* GilroyFonts.swift in Sources */,
 				29DD1C6F2C8B49F30001ACC8 /* Navigator_Screen.swift in Sources */,
