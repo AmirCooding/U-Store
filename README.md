@@ -131,6 +131,10 @@ git push origin feature/your-feature
 
   
  ## Design
+![Login](https://github.com/user-attachments/assets/54da62c1-aa0f-4762-8c3b-b6f37d31a064)
+![Home](https://github.com/user-attachments/assets/354bde78-0096-4b39-9039-b004549d9005)
+![Explore](https://github.com/user-attachments/assets/b8d316bb-9af6-425f-bcaf-65d3166a63be)
+ ![Account](https://github.com/user-attachments/assets/b405fe0b-6e6c-4aab-8b80-2c5bccf06a30)
 
 
 ## Contact
