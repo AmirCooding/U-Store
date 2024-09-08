@@ -9,6 +9,12 @@ import Foundation
 
 
 struct UStore_RepositoryImpl : UStore_Repository{
+
+    var authCallback: AuthCallback
+    
+    init(){
+        authCallback = AuthCallback()
+    }
     
     func signUp(email: String, password: String) {
         firebaseAuth.signUp(username: email, password: password)
@@ -23,11 +29,17 @@ struct UStore_RepositoryImpl : UStore_Repository{
         firebaseAuth.signOut()
     }
     
- 
+    func resetPassword(email: String) {
+        firebaseAuth.resetPassword(email: email)
+    }
     
-
+    
+    var userIsLogin: Bool {
+          firebaseAuth.userIsLogin
+      }
+    
+    
    
-    
     
     private var firebaseAuth = FirbaseAuth()
     

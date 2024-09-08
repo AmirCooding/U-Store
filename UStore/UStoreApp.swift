@@ -10,14 +10,25 @@ import Firebase
 
 @main
 struct UStoreApp: App {
+    
+    private var viewModel : UStore_UserAuth_ViewModel
+    
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
-    
+        viewModel = UStore_UserAuth_ViewModel()
+        
     }
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if viewModel.userIsLogin {
+                Home_Screen()
+            } else {
+                SignIn_Screen()
+            }
         }
+     
+        
     }
+    
 }

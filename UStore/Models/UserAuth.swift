@@ -7,16 +7,11 @@
 
 
 import Foundation
-
-
 struct UserAuth : Codable {
-    
     internal init(id: String, email: String) {
         self.id = id
         self.email = email
-
     }
-    
     
     let id: String
     let email: String
