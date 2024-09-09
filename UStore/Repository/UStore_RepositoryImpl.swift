@@ -9,38 +9,40 @@ import Foundation
 
 
 struct UStore_RepositoryImpl : UStore_Repository{
-
-    var authCallback: AuthCallback
+ 
     
-    init(){
-        authCallback = AuthCallback()
+    func signInWithGoogle() async throws {
+        try await firebaseAuthManager.SigninWithGoogle()
     }
-    
-    func signUp(email: String, password: String) {
-        firebaseAuth.signUp(username: email, password: password)
-    }
-    
-    func signIn(email: String, password: String) {
-        firebaseAuth.signIn(username: email, password: password)
-    }
-    
-    func signOut() {
-        
-        firebaseAuth.signOut()
-    }
-    
-    func resetPassword(email: String) {
-        firebaseAuth.resetPassword(email: email)
-    }
-    
     
     var userIsLogin: Bool {
-          firebaseAuth.userIsLogin
+          firebaseAuthManager.isUserSignedIn
       }
+
     
+ 
+    func signUp(email: String, password: String) async throws {
+       try await firebaseAuthManager.signUp(email: email, password: password)
+    }
+    
+    func signIn(email: String, password: String) async throws {
+        try await firebaseAuthManager.signIn(email: email, password: password)
+
+    }
+
+    
+    func signOut() throws{
+       try firebaseAuthManager.signOut()
+    }
+    
+    func resetPassword(email: String) async throws{
+      try await firebaseAuthManager.resetPassword(email: email)
+    }
+    
+
     
    
     
-    private var firebaseAuth = FirbaseAuth()
+    private var firebaseAuthManager = FirebaseAuthManager()
     
 }

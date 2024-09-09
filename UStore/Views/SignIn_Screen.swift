@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SignIn_Screen: View {
     @StateObject private var viewModel = UStore_UserAuth_ViewModel()
-
     var body: some View {
         ZStack {
             NavigationStack {
@@ -51,7 +50,10 @@ struct SignIn_Screen: View {
                         textColor: .white,
                         backgroundColor: !viewModel.authForm.email.isEmpty &&  !viewModel.authForm.password.isEmpty ? Colors.primary.color() : Colors.primary.color().opacity(0.6),
                         action: {
-                            viewModel.handelSignIn()
+                            Task{
+                                try await   viewModel.handelSignIn()
+                                
+                            }
                         }
                     )
                     .disabled(viewModel.authForm.email.isEmpty && viewModel.authForm.password.isEmpty)
@@ -82,15 +84,30 @@ struct SignIn_Screen: View {
                         text: "Continue With Google",
                         textColor: .white,
                         backgroundColor: Colors.google.color(),
-                        action: viewModel.handleLoginWithGoogle,
+                        action: {
+                            Task{
+                                try await   viewModel.handleLoginWithGoogle()
+                                
+                            }
+                            
+                        },
                         image: Image("logo-google")
                     ).padding(.top, 20)
+                        .navigationDestination(isPresented: $viewModel.authForm.navigateToView) {
+                            Navigatoreator_Screen()
+                                .navigationBarBackButtonHidden(true)
+                        }
                     
                     CustomButton(
                         text: "Continue With Facebook",
                         textColor: .white,
                         backgroundColor: Colors.faceBook.color(),
-                        action: viewModel.handleLoginWithGoogle,
+                        action: {
+                            // MARK : call handel Login with Facebook
+                            Task{
+                                try await viewModel.handleLoginWithGoogle()
+                            }
+                        },
                         image: Image("facebook_image")
                     )
                     
@@ -109,7 +126,7 @@ struct SignIn_Screen: View {
             }
             
             if viewModel.authForm.isLoading {
-           LoadingView()
+                LoadingView()
             }
         }
     }

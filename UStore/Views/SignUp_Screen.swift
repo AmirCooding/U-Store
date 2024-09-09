@@ -52,7 +52,9 @@ struct SignUp_Screen: View {
                            textColor: .white,
                            backgroundColor: viewModel.authForm.isTermsAccepted ? Colors.primary.color() : Colors.primary.color().opacity(0.6),
                            action: {
-                               viewModel.handleSignUp()
+                               Task {
+                                          try await viewModel.handleSignUp()  
+                                     }
                            }
                        )     .disabled(!viewModel.authForm.isTermsAccepted)
                         .padding(.top, 20)

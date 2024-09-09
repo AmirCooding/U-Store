@@ -7,9 +7,11 @@
 
 import Foundation
 import FirebaseAuth
+import GoogleSignInSwift
+import GoogleSignIn
 
 class UStore_UserAuth_ViewModel : ObservableObject{
-    private var repo : UStore_RepositoryImpl
+    var repo : UStore_RepositoryImpl
     @Published var authForm : AuthForme
     
     init() {
@@ -20,128 +22,108 @@ class UStore_UserAuth_ViewModel : ObservableObject{
     var userIsLogin: Bool {
         return repo.userIsLogin
     }
+
     
-    func signUp(email : String  , password : String ){
-        repo.signUp(email:email, password: password)
+    func handleLoginWithGoogle() async throws {
+        do {
+            try await repo.signInWithGoogle()
+            DispatchQueue.main.async {
+                self.authForm.isLoading = true
+                self.authForm.navigateToView = true
+                self.authForm.isLoading = false
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = AuthError.faildSignInWithGoogle.localizedDescription
+                self.authForm.showAlert = true
+            }
+          
+        }
     }
-    
-    func signIn(email : String  , password : String ){
-        repo.signIn(email: email, password: password)
-    }
-    
-    func signOut(){
-        repo.signOut()
-    }
-    
-    
-    
-    func handleLoginWithGoogle(){
-        
-    }
-    
+
     
     func handleLoginWithFacebook(){
         
     }
     
-    func handelSignIn() {
-        if authForm.email.isEmpty || authForm.password.isEmpty {
-            authForm.alertMessage = "Please fill in all fields."
-            authForm.showAlert = true
-            return
-        }
-        
-        signIn(email: authForm.email, password: authForm.password)
-        if !repo.authCallback.isSignIn {
-            authForm.alertMessage = AuthError.failedSignIn.localizedDescription
-            authForm.showAlert = true
-            return
+    func handelSignIn() async throws {
+        do {
+            try await repo.signIn(email: authForm.email, password: authForm.password)
+            DispatchQueue.main.async {
+                self.authForm.isLoading = true
+                self.authForm.navigateToView = true
+            }
             
-        } else{
-            authForm.isLoading = true
-            authForm.navigateToView = true
-            authForm.isLoading = false
+        } catch {
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = AuthError.failedSignIn.localizedDescription
+                self.authForm.showAlert = true
+            }
         }
     }
+
     
-    
-    func handelresetPassword() {
-        if authForm.email.isEmpty  {
-            authForm.alertMessage = "Please fill in all fields."
-            authForm.showAlert = true
-            return
-        }
-        
-        signIn(email: authForm.email, password: authForm.password)
-        if !repo.authCallback.isSignIn {
-            authForm.alertMessage = AuthError.failedSignIn.localizedDescription
-            authForm.showAlert = true
-            return
-            
-        } else{
-            authForm.isLoading = true
-            authForm.navigateToView = true
-            authForm.isLoading = false
-        }
-    }
-    
-    func handleSignUp(){
-        // Check if any field is empty
+    func handleSignUp() async throws {
         if authForm.email.isEmpty || authForm.password.isEmpty || authForm.confirmPassword.isEmpty {
-            authForm.alertMessage = "Please fill in all fields."
-            authForm.showAlert = true
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = "Please fill in all fields."
+                self.authForm.showAlert = true
+            }
             return
         }
         
-        // Check if the email format is valid
         if !isValidEmail(authForm.email) {
-            authForm.alertMessage = "Please enter a valid email address."
-            authForm.showAlert = true
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = "Please enter a valid email address."
+                self.authForm.showAlert = true
+            }
             return
         }
-        
-        // Check for password strength
         if let errorMessage = validatePassword(authForm.password) {
-            authForm.alertMessage = errorMessage
-            authForm.showAlert = true
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = errorMessage
+                self.authForm.showAlert = true
+            }
             return
         }
-        
-        // Check if passwords match
         if authForm.password != authForm.confirmPassword {
-            authForm.alertMessage = "Passwords do not match. Please try again."
-            authForm.showAlert = true
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = "Passwords do not match. Please try again."
+                self.authForm.showAlert = true
+            }
             return
         }
         
         // Ensure terms and conditions are accepted
         if !authForm.isTermsAccepted {
-            authForm.alertMessage = "You must accept the terms and conditions to sign up."
-            authForm.showAlert = true
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = "You must accept the terms and conditions to sign up."
+                self.authForm.showAlert = true
+            }
             return
         }
-        
-        authForm.isLoading = true
-        signUp(email: authForm.email, password: authForm.password)
-        if repo.authCallback.isSignUp{
-            authForm.alertMessage = AuthError.failedSignUp.localizedDescription
-            authForm.showAlert = true
+        do{
+            try await repo.signUp(email: authForm.email, password: authForm.password)
+            DispatchQueue.main.async {
+                self.authForm.isLoading = true
+                self.authForm.navigateToView = true
+                self.authForm.isLoading = false
+            }
+        }catch{
+            DispatchQueue.main.async {
+                self.authForm.alertMessage = AuthError.failedSignUp.localizedDescription
+                self.authForm.showAlert = true
+            }
             return
-        }else{
-            authForm.isLoading = false
-            authForm.navigateToView = true
         }
-        
-        
     }
+
     
     
     
-    func handleResetPassword(email: String) {
+    func handleResetPassword(email: String) async throws {
         if isValidEmail(email) {
-            repo.resetPassword(email: email)
-            authForm.alertMessage = "Email is sent successfully"
-            authForm.showAlert = true
+         try await  repo.resetPassword(email: email)
             authForm.navigateToView = true
         } else {
             authForm.alertMessage = AuthError.inValidEmail.localizedDescription

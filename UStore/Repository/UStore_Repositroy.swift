@@ -8,11 +8,11 @@
 import Foundation
 
 protocol UStore_Repository {
-    func signUp(email: String, password: String)
-    func signIn(email: String, password: String)
-    func resetPassword(email: String)
-    func signOut()
-    var authCallback: AuthCallback { get }
+    func signUp(email: String, password: String) async throws
+    func signIn(email: String, password: String)async throws
+    func resetPassword(email: String)async throws
+    func signOut()throws
     var userIsLogin: Bool { get }
+    
 }
 
