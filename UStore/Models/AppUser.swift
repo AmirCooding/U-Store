@@ -1,13 +1,15 @@
 //
-//  UserAuth.swift
+//  AppUser.swift
 //  UStore
 //
-//  Created by Amir Lotfi on 07.09.24.
+//  Created by Amir Lotfi on 10.09.24.
 //
 
-
 import Foundation
-struct UserAuth : Codable {
+import FirebaseFirestore
+
+struct AppUser : Codable{
+    
     internal init(id: String, email: String) {
         self.id = id
         self.email = email
@@ -15,7 +17,5 @@ struct UserAuth : Codable {
     
     let id: String
     let email: String
-
-
+    
 }
-

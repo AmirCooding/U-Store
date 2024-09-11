@@ -52,6 +52,7 @@ class UStore_UserAuth_ViewModel : ObservableObject{
             DispatchQueue.main.async {
                 self.authForm.isLoading = true
                 self.authForm.navigateToView = true
+                self.authForm.isLoading = false
             }
             
         } catch {

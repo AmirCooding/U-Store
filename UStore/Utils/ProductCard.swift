@@ -12,6 +12,7 @@ import SwiftUI
 
 struct ProductCard: View {
     @State private var isFavorite: Bool = false
+    @StateObject private var viewModel = Favorite_ViewModel()
     var product: Product
 
     var body: some View {
@@ -23,7 +24,7 @@ struct ProductCard: View {
                             .resizable()
                             .frame(width: 150, height: 150)
                     } placeholder: {
-                        ProgressView()
+                        LoadingView()
                             .frame(width: 150, height: 150)
                     }
                     
@@ -34,8 +35,18 @@ struct ProductCard: View {
                             .lineLimit(1)
                         
                         Spacer()
-                        Button(action: {
-                            isFavorite.toggle()
+                        Button(
+                            action:{
+                              
+                                    Task{
+                                        try await viewModel.addToFavorite(productId:product.id)
+                                        
+                                        
+                                    }
+                                   
+                            
+                                    
+                               
                         }) {
                             Image(systemName: isFavorite ? "heart.fill" : "heart")
                                 .foregroundColor(isFavorite ? Colors.error.color() : Colors.secondary.color())
@@ -82,6 +93,14 @@ struct ProductCard: View {
             .frame(width: 150)
         }
         .padding()
+    }
+    
+    func deleteFavorite(at offsets: IndexSet) {
+        offsets.map { _ in viewModel.favorites[0] }.forEach { product in
+            Task {
+                try await viewModel.deleteFavorite(favorite:product)
+            }
+        }
     }
 }
 

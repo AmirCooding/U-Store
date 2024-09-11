@@ -19,6 +19,28 @@ class UStoreApiService{
         return products
     }
     
+    
+    func fetchCategroy(category : String) async throws -> [Product] {
+        let encodedCategory = category.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? category
+        let productsUrl = "https://fakestoreapi.com/products/category/\(encodedCategory)"
+        guard let url = URL(string: productsUrl) else { throw HttpError.invalidURL }
+        guard let (data, _) = try? await URLSession.shared.data(from: url) else { throw HttpError.requestFailed }
+        guard let result = try? JSONDecoder().decode([Product].self, from: data) else { throw HttpError.failedParsing  }
+        let products = result
+        return products
+    }
+    
+    
+    func fetchProductById(productId : Int) async throws -> Product {
+        let productsUrl = "https://fakestoreapi.com/products/category/\(productId)"
+        guard let url = URL(string: productsUrl) else { throw HttpError.invalidURL }
+        guard let (data, _) = try? await URLSession.shared.data(from: url) else { throw HttpError.requestFailed }
+        guard let result = try? JSONDecoder().decode([Product].self, from: data) else { throw HttpError.failedParsing}
+        guard let product = result.first else { throw HttpError.noProductFound }
+        return product
+    }
+
+    
   
     
     

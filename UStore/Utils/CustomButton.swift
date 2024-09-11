@@ -10,7 +10,7 @@ import SwiftUI
 struct CustomButton: View {
     var text: String
     var textColor: Color
-    var iconColor : Color?
+    var iconColor : Color? = Colors.white.color()
     var backgroundColor: Color
     var action: () -> Void
     var image: Image? // Optional image

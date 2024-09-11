@@ -11,6 +11,7 @@ enum HttpError: Error {
     case invalidURL
     case requestFailed
     case failedParsing
+    case noProductFound
     
     var description: String {
           switch self {
@@ -20,6 +21,8 @@ enum HttpError: Error {
               "The request failed"
           case .failedParsing:
               "The data could not be parsed"
+          case .noProductFound:
+              "No product Found"
           }
       }
 }
