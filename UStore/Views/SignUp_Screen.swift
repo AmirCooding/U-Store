@@ -9,7 +9,9 @@
 import SwiftUI
 
 struct SignUp_Screen: View {
-    @StateObject private var viewModel = UStore_UserAuth_ViewModel()
+    @StateObject private var viewModel =
+    UStore_UserAuth_ViewModel()
+    
     var body: some View {
         NavigationStack {
             ScrollView {

@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import OSLog
 import Firebase
 
 @main
 struct UStoreApp: App {
-    
+   static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(describing: UStoreApp.self)
+    )
+
     private var viewModel : UStore_UserAuth_ViewModel
     
-    init() {
+    
+    init()  {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         viewModel = UStore_UserAuth_ViewModel()
-        
     }
     var body: some Scene {
         WindowGroup {
@@ -27,8 +32,6 @@ struct UStoreApp: App {
                 SignIn_Screen()
             }
         }
-     
-        
     }
     
 }

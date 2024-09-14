@@ -36,6 +36,13 @@ enum Tab: String, Identifiable, CaseIterable {
         }
     }
     
+    var badgeCount: Int {
+          switch self {
+          case .cart: return 3 
+          default: return 0
+          }
+      }
+
     var view: AnyView {
         switch self {
         case .home: return AnyView(Home_Screen())

@@ -11,8 +11,7 @@ import Foundation
 import SwiftUI
 
 struct ProductCard: View {
-    @State private var isFavorite: Bool = false
-    @StateObject private var viewModel = Favorite_ViewModel()
+    @StateObject private var viewModel  = ProductCard_ViewModle()
     var product: Product
 
     var body: some View {
@@ -35,24 +34,21 @@ struct ProductCard: View {
                             .lineLimit(1)
                         
                         Spacer()
-                        Button(
-                            action:{
-                              
-                                    Task{
-                                        try await viewModel.addToFavorite(productId:product.id)
-                                        
-                                        
-                                    }
-                                   
-                            
-                                    
-                               
+                        Button(action: {
+                            Task {
+                                if viewModel.isLiked{
+                                    try await viewModel.delteFavoriteByProductId(productid: product.id)
+                                } else {
+                                    try await viewModel.addToFavorite(productId: product.id)
+                                }
+                            }
                         }) {
-                            Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                .foregroundColor(isFavorite ? Colors.error.color() : Colors.secondary.color())
+                            Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
+                                .foregroundColor(viewModel.isLiked ? Colors.error.color() : Colors.secondary.color())
                                 .font(.system(size: 20))
                         }
                         .padding(.trailing, 10)
+
                     }
                     .padding(.top, 5)
                     
@@ -94,14 +90,7 @@ struct ProductCard: View {
         }
         .padding()
     }
-    
-    func deleteFavorite(at offsets: IndexSet) {
-        offsets.map { _ in viewModel.favorites[0] }.forEach { product in
-            Task {
-                try await viewModel.deleteFavorite(favorite:product)
-            }
-        }
-    }
+ 
 }
 
 #Preview {

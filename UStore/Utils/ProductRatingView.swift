@@ -32,7 +32,7 @@ struct ProductRatingView: View {
                 if let count = rating.count {
                     
                     Text("(\(count) reviews)")
-                        .font(.subheadline)
+                        .font(fontStlyeCount)
                         .foregroundColor(.gray)
                     
                 } else {

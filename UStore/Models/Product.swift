@@ -38,13 +38,13 @@ extension Product {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = Locale(identifier: "de_DE") // Euro locale
-        return formatter.string(from: NSNumber(value: price)) ?? "0.00 €"
+        return formatter.string(from: NSNumber(value: price)) ?? "79.99.00 €"
     }
 }
 
 extension Product {
     static var sample: Product {
-        Product(id: 1, title: "Sample Product", price: 99.99, description: "This is a sample product description.", category: .electronics, image: "https://cdn.corporatefinanceinstitute.com/assets/product-mix3.jpeg", rating: Rating(rate: 3.9, count: 34))
+        Product(id: 1, title: "Sample Product", price: 99.99, description: "This is a sample product description.", category: .electronics, image: "https://cdn.corporatefinanceinstitute.com/assets/product-mix3.jpeg", rating: Rating(rate: 3.9, count: 34) )
     }
 }
 

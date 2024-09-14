@@ -5,38 +5,58 @@
 //  Created by Amir Lotfi on 10.09.24.
 //
 import Foundation
-
+import os
+@MainActor
 class Favorite_ViewModel: ObservableObject {
+    private var repos : UStore_RepositoryImpl
+    @Published var isLoading: Bool = false
     @Published var favorites: [Favorite] = []
-    @Published var favoriteProducts: [Product] = []  
+    @Published var favoriteProducts: [Product] = []
     
-    init(){
+    init() {
+        repos = UStore_RepositoryImpl()
+        Task{
+            try await fetchFavoritesAndProducts()
+            
+        }
     }
-
-    // Fetch all favorites and the corresponding products
+    
     func fetchFavoritesAndProducts() async throws {
-        favorites = try await UStore_RepositoryImpl.shared.fetchAllFavorites()
+        self.isLoading = true
+        favorites = try await repos.fetchAllFavorites()
         favoriteProducts.removeAll()
         for favorite in favorites {
-            let product = try await fetchProduct(productId: favorite.ProductId)
+            let product = try await repos.fetchProductById(productId: favorite.ProductId)
             favoriteProducts.append(product)
+            self.isLoading = false
+        }
+    
+    }
+    
+    // Fetch product details for a given productId
+    func fetchProductById(productId: Int) async throws -> Product {
+        return try await repos.fetchProductById(productId: productId)
+    }
+ 
+    func deleteFromFavorite(favorite: Favorite) async throws {
+        try await repos.deleteFavorite(favorite: favorite)
+        favorites.removeAll { $0.ProductId == favorite.ProductId }
+    }
+    
+    // Delete a product from favorites by its productId
+    func deleteFavoriteByProductId(productId: Int) async throws {
+        LoggerManager.logInfo("Trying to delete favorite with ProductId: \(productId)")
+        for favorite in favorites {
+            LoggerManager.logInfo("Existing favorite ProductId: \(favorite.ProductId)")
+        }
+
+        if let favorite = favorites.first(where: { $0.ProductId == productId }) {
+            LoggerManager.logInfo("------------------------ Found Favorite! --------------------")
+            try await deleteFromFavorite(favorite: favorite)
+        } else {
+            LoggerManager.logInfo("------------------------ No Favorite Found --------------------")
         }
     }
 
-    // Fetch product details for a given productId
-    func fetchProduct(productId: Int) async throws -> Product {
-        return try await UStore_RepositoryImpl.shared.fetchProductById(productId: productId)
-    }
 
-    // Add product to favorite
-    func addToFavorite(productId: Int) async throws {
-        try  UStore_RepositoryImpl.shared.createFavorite(productId: productId)
-        try await fetchFavoritesAndProducts()
-    }
-
-    // Remove product from favorite
-    func deleteFavorite(favorite: Favorite) async throws {
-        try await UStore_RepositoryImpl.shared.deleteFavorite(favorite: favorite)
-        try await fetchFavoritesAndProducts()
-    }
 }

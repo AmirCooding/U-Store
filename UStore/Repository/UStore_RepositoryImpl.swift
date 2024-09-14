@@ -9,17 +9,13 @@ import Foundation
 
 
 struct UStore_RepositoryImpl : UStore_Repository{
-  
-    
- 
 
-     static let shared = UStore_RepositoryImpl()
-   
     
   ///------------- Call API -----------------------------------
     ///
     func fetchAllProducts() async throws -> [Product] {try await api.fetchProducts()}
-    func fetchProductById(productId: Int) async throws-> Product { try await api.fetchProductById(productId: productId)}
+    func fetchProductById(productId: Int) async throws-> Product {
+        try await api.fetchProductByIdsyn(productId: productId)}
  
 
  ///------------- Firebase Autentication -----------------------------------

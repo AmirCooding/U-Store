@@ -13,6 +13,7 @@ enum AuthError: Error {
     case failedSignOut
     case inValidEmail
     case faildSignInWithGoogle
+    case invalidUser
     
     var localizedDescription: String {
         switch self {
@@ -30,8 +31,8 @@ enum AuthError: Error {
             return "  Invalid email format"
         case .faildSignInWithGoogle:
             return "Faild Sign In With Google Account"
-            
-          
+        case .invalidUser:
+            return "User is not authenticated or user ID is missing"
         }
     }
 }
