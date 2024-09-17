@@ -11,7 +11,8 @@ import SwiftUI
 
 struct FavoriteCart_Screen: View {
     var product: Product
-    @StateObject private var viewModel = Favorite_ViewModel()
+    @EnvironmentObject private var viewModel  :  Favorite_ViewModel
+    @EnvironmentObject private var cartViewModel  :  Cart_ViewModel
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
@@ -67,7 +68,7 @@ struct FavoriteCart_Screen: View {
                         .padding(.bottom, 4)
                 }.padding(.top ,5 )
                 HStack{
-                    Text("Verkäufer:")
+                    Text("Seller:")
                         .font(.subheadline)
                         .foregroundColor(Colors.secondary.color())
                         .padding(.bottom, 8)
@@ -109,7 +110,13 @@ struct FavoriteCart_Screen: View {
                         
                         Spacer()
                         
-                        CustomButton(text: "Add to cart", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {} ,image:Image(systemName: "cart"))
+                        CustomButton(text: "Add to cart", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {
+                            Task{
+                                try await viewModel.deleteFavoriteByProductId(productId: product.id)
+                                try await cartViewModel.addToCart(productId:product.id)
+                               
+                            }
+                        } ,image:Image(systemName: "cart"))
                         
                     }
                 }
@@ -123,5 +130,7 @@ struct FavoriteCart_Screen: View {
 }
 #Preview {
     FavoriteCart_Screen(product: .sample)
+        .environmentObject(Favorite_ViewModel())
+        .environmentObject(Cart_ViewModel())
 }
 

@@ -11,7 +11,9 @@ import Foundation
 
 @Observable class Explore_ViewModel{
     var products: [Product] = []
+
     private let repos : UStore_RepositoryImpl
+    
     
     
     init() {

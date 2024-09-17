@@ -23,13 +23,19 @@ extension Product {
     }
 }
 
+// This is used as subPrice in Cart
+extension Product {
+    var currentPrice : Double {
+        (price) * 0.8
+    }
+}
+
 extension Product {
     var discountedPrice: String {
-        let discount = (price ) * 0.8
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "de_DE") // Euro locale
-        return formatter.string(from: discount as NSNumber)!
+        formatter.locale = Locale(identifier: "de_DE") 
+        return formatter.string(from: currentPrice as NSNumber)!
     }
 }
 
@@ -37,8 +43,8 @@ extension Product {
     var originalPrice: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "de_DE") // Euro locale
-        return formatter.string(from: NSNumber(value: price)) ?? "79.99.00 €"
+        formatter.locale = Locale(identifier: "de_DE")
+        return formatter.string(from: NSNumber(value: price)) ?? "00.00€"
     }
 }
 

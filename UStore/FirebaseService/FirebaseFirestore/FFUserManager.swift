@@ -14,9 +14,8 @@ class FFUserManager {
     var appUser: AppUser?
     
     static let shared = FFUserManager()
-    
-    
-    
+    var auth = Auth.auth()
+
     // Mark : Create User in Firebase Firestore
     func createUser(id: String, email: String) {
         let user = AppUser(id: id, email: email)

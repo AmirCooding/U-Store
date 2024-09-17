@@ -31,12 +31,12 @@ class ProductCard_ViewModle  : ObservableObject{
         self.isLiked = true
         try  repos.createFavorite(productId: productId)
     }
-    
+
     func deleteFromeFavorite(favorit: Favorite) async throws {
         try await  repos.deleteFavorite(favorite: favorit)
     }
     
-    func delteFavoriteByProductId(productid : Int)async throws{
+    func deleteFavoritebyId(productid : Int)async throws{
         self.isLiked = false
         for favorite in favorites {
             if favorite.ProductId == productid{

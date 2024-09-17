@@ -25,7 +25,7 @@ struct ProductCategory  : Identifiable, Hashable{
 
 extension ProductCategory {
     static var sampleCategory: ProductCategory {
-        ProductCategory(id:1,title: "WOMAN'S" , category: Category.electronics, image: "womens")
+        ProductCategory(id:1,title: "WOMAN'S" , category: Category.electronics, image: "electronics")
     }
     
     

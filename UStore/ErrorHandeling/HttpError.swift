@@ -14,6 +14,7 @@ enum HttpError: Error {
     case noProductFound
     case unknownError
     case requestFailedFetchProductById
+    case noDocumentID
     var description: String {
           switch self {
           case .invalidURL:
@@ -27,7 +28,9 @@ enum HttpError: Error {
           case .unknownError:
               "unknownError"
           case .requestFailedFetchProductById:
-              "requestFailedFetchProductById"
+              "request Failed Fetch ProductById"
+          case .noDocumentID:
+              "no Document ID in Favorite List"
           }
       }
 }

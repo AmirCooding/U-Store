@@ -27,7 +27,7 @@ struct UStoreApp: App {
     var body: some Scene {
         WindowGroup {
             if viewModel.userIsLogin {
-                Home_Screen()
+                Navigatoreator_Screen()
             } else {
                 SignIn_Screen()
             }
