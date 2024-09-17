@@ -8,25 +8,33 @@
 import SwiftUI
 
 struct CartCard_Screen: View {
-    @EnvironmentObject private var viewModel : Cart_ViewModel
     var product : Product
+    @StateObject private var viewModel = Cart_ViewModel()
+    @State private var showAlert = false
+
     var body: some View {
         ZStack(alignment:.trailingLastTextBaseline){
             Button(action: {
-                
-                Task{
-                  try await  viewModel.deleteCartByProductId(productId: product.id)
-                }
-              
-            }) {
-                Image(systemName: "multiply.circle.fill")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(Colors.error.color().opacity(0.7))
-                    .padding(.bottom, 100)
-            }
-            
-            
+                         showAlert = true
+                     }) {
+                         Image(systemName: "multiply.circle.fill")
+                             .resizable()
+                             .frame(width: 24, height: 24)
+                             .foregroundColor(Colors.error.color().opacity(0.7))
+                             .padding(.bottom, 100)
+                     }
+                     .alert(isPresented: $showAlert) {
+                         Alert(
+                             title: Text("Delete Product"),
+                             message: Text("Are you sure you want to delete this product from the cart?"),
+                             primaryButton: .destructive(Text("Delete")) {
+                                 Task {
+                                     try await viewModel.deleteCartByProductId(productId:product.id)
+                                 }
+                             },
+                             secondaryButton: .cancel()
+                         )
+                     }
             HStack{
                 HStack {
                     AsyncImage(url: product.artworkUrl) { image in
@@ -63,7 +71,7 @@ struct CartCard_Screen: View {
                             Button(action: {
                                 
                                 Task{
-                                  try await  viewModel.deleteCartByProductId(productId: product.id)
+                                  try await  viewModel.deleteProductCartByProductId(productId: product.id)
                                 }
                               
                             }) {
@@ -115,5 +123,5 @@ struct CartCard_Screen: View {
 
 #Preview {
     CartCard_Screen(product: .sample)
-        .environmentObject(Cart_ViewModel())
+        
 }

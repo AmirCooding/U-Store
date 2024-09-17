@@ -35,15 +35,15 @@ class FFFavoriteManager  : ObservableObject{
                 print("Error listening to Firestore: \(error)")
                 return
             }
-            
+           /*
             guard let documents = snapshot?.documents else {
                 print("No documents in favorites collection")
                 return
             }
-            
-            let updatedFavorites = documents.compactMap { snapshot in
+            */
+            let updatedFavorites = snapshot?.documents.compactMap { snapshot in
                 try? snapshot.data(as: Favorite.self)
-            }
+            } ?? []
             
             print("Fetched \(updatedFavorites.count) favorites from snapshot listener")
             
@@ -82,14 +82,17 @@ class FFFavoriteManager  : ObservableObject{
     }
     
     
+   
     // MARK: - Delete Favorite
     func deleteFavorite(favorite: Favorite) async throws {
         guard let id = favorite.id else {
-            print("Failed to delete favorite: no document ID")
+            LoggerManager.logInfo("Failed to delete favorite: no document ID")
             throw HttpError.requestFailed
         }
         try await dbCollection.document(id).delete()
     }
+    
+    
     // MARK: - Fetch All Favorites (one-time fetch)
     func fetchAllFavorites() async throws -> [Favorite] {
         let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()

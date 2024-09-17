@@ -83,6 +83,12 @@ class Cart_ViewModel : ObservableObject{
     
     func deleteCartByProductId(productId: Int) async throws {
         if let cart = FFCartManager.shared.carts.first(where: { $0.ProductId == productId }) {
+                try await repos.deleteCart(cart: cart)
+        }
+    }
+    
+    func deleteProductCartByProductId(productId: Int) async throws {
+        if let cart = FFCartManager.shared.carts.first(where: { $0.ProductId == productId }) {
             if cart.quantity > 1 {
                 let newQuantity = cart.quantity - 1
                 try await repos.updateCartQuantity(productId: productId, newQuantity: newQuantity)

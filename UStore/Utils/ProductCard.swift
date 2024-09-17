@@ -11,10 +11,8 @@ import Foundation
 import SwiftUI
 
 struct ProductCard: View {
-    @StateObject private var viewModel  = ProductCard_ViewModle()
-    @EnvironmentObject private var favoriteViewModel : Favorite_ViewModel
-    @EnvironmentObject private var cartViewModel : Cart_ViewModel
-    
+    @StateObject private var viewModel  = ProductCard_ViewModel()
+    @State private var toogleFavorite : Bool = false
     var product: Product
     
     var body: some View {
@@ -41,12 +39,7 @@ struct ProductCard: View {
                             Spacer()
                             Button(action: {
                                 Task {
-                                    if viewModel.isLiked{
-                                        // TODO 
-                                        try await favoriteViewModel.deleteFavoriteByProductId(productId: product.id)
-                                    } else {
-                                        try await favoriteViewModel.addProductById(productId: product.id)
-                                    }
+                                  try await  viewModel.toggleFavorites(productId: product.id)
                                 }
                             }) {
                                 Image(systemName: viewModel.isLiked ? "heart.fill" : "heart")
@@ -80,7 +73,7 @@ struct ProductCard: View {
                             
                             Button(action: {
                                 Task {
-                                    try await cartViewModel.addToCart(productId:product.id)
+                                    try await viewModel.addToCart(productId:product.id)
                                 }
                             }) {
                                 Image(systemName: "plus.app.fill")
@@ -95,6 +88,10 @@ struct ProductCard: View {
                 .cornerRadius(12)
                 .shadow(radius: 5)
                 .frame(width: 150)
+            }.onAppear{
+                Task{
+                    try await viewModel.toggleColorFavoriteIcon(productId: product.id) 
+                }
             }
             .padding()
         }

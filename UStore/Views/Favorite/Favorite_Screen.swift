@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Favorite_Screen: View {
-    @EnvironmentObject var viewModel : Favorite_ViewModel
+    @StateObject var viewModel  = Favorite_ViewModel()
     var body: some View {
         NavigationStack {
             ZStack {
@@ -38,10 +38,6 @@ struct Favorite_Screen: View {
                     LoadingView()
                         .edgesIgnoringSafeArea(.all)
                 }
-            }.onAppear{
-                Task{
-                    try await viewModel.fetchFavoritesAndProducts()
-                }
             }
         }
         
@@ -52,5 +48,5 @@ struct Favorite_Screen: View {
 
 #Preview {
     Favorite_Screen()
-        .environmentObject(Favorite_ViewModel())
+      
 }

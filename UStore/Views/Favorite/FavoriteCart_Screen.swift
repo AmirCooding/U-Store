@@ -11,8 +11,8 @@ import SwiftUI
 
 struct FavoriteCart_Screen: View {
     var product: Product
-    @EnvironmentObject private var viewModel  :  Favorite_ViewModel
-    @EnvironmentObject private var cartViewModel  :  Cart_ViewModel
+    @EnvironmentObject  private var viewModel  :  Favorite_ViewModel
+   
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
@@ -113,7 +113,7 @@ struct FavoriteCart_Screen: View {
                         CustomButton(text: "Add to cart", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {
                             Task{
                                 try await viewModel.deleteFavoriteByProductId(productId: product.id)
-                                try await cartViewModel.addToCart(productId:product.id)
+                                try await viewModel.addToCart(productId:product.id)
                                
                             }
                         } ,image:Image(systemName: "cart"))
@@ -131,6 +131,6 @@ struct FavoriteCart_Screen: View {
 #Preview {
     FavoriteCart_Screen(product: .sample)
         .environmentObject(Favorite_ViewModel())
-        .environmentObject(Cart_ViewModel())
+     
 }
 

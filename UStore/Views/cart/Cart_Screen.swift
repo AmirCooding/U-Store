@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct Cart_Screen: View {
-    @EnvironmentObject private var viewModel  : Cart_ViewModel
+    @StateObject private var viewModel   = Cart_ViewModel()
     var body: some View {
         NavigationStack {
             ZStack {
+                /*
                 VStack{
                     if viewModel.cartProducts.isEmpty{
                         NoContentOverlay(
@@ -20,6 +21,7 @@ struct Cart_Screen: View {
                         )
                     }
                 }
+                 */
                 ScrollView {
                
                     VStack {
@@ -54,5 +56,6 @@ struct Cart_Screen: View {
 
 #Preview {
     Cart_Screen()
-        .environmentObject(Cart_ViewModel())
+       
+      
 }
