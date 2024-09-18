@@ -21,15 +21,31 @@ struct Cart_Screen: View {
                         )
                     }
                 }
-                 
-                ScrollView {
-               
-                    VStack {
-                        ForEach(viewModel.cartProducts) { product in
-                            CartCard_Screen(product: product)
+                VStack{
+                    ScrollView {
+                        
+                        VStack {
+                            ForEach(viewModel.cartProducts) { product in
+                                CartCard_Screen(product: product)
+                            }
                         }
+                
                     }
-                    
+                    Spacer()
+                    HStack{
+                        HStack{
+                            Text("Total : ").font(GilroyFonts.font(style: .bold, size: 16))
+                            Text("\(viewModel.totalCost) ").font(GilroyFonts.font(style: .bold, size:17))
+                                .foregroundColor(Colors.primary.color())
+                        }.padding(.horizontal,30)
+                        Spacer()
+                        HStack{
+                            CustomButton(text: "Checkout", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {})
+                        }.frame( width: 120 , height: 60)
+                            .padding()
+                    }
+                    .background(Colors.secondary.color().opacity(0.07))
+                    .padding(.bottom, 2)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {

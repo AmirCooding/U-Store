@@ -19,14 +19,17 @@ struct Favorite_Screen: View {
                         overlayText: " "
                     )
                 }
-                ScrollView {
-                    VStack {
-                        ForEach(viewModel.favoriteProducts) { product in
-                            FavoriteCart_Screen(product: product)
-                                .environmentObject(viewModel)
+                VStack{
+                    ScrollView {
+                        VStack {
+                            ForEach(viewModel.favoriteProducts) { product in
+                                FavoriteCart_Screen(product: product)
+                                    .environmentObject(viewModel)
+                            }
                         }
+                        
                     }
-                    
+    
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {

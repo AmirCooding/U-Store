@@ -16,11 +16,13 @@ class Cart_ViewModel : ObservableObject{
     @Published var productQuantities: [Int: Int] = [:]
     @Published var cartProducts: [Product] = []
     @Published var subPrices: [Int: String] = [:]
+    @Published var totalCost: String = "0.00"
     var scriptions = Set<AnyCancellable>()
     @Published var carts   = [Cart](){
         didSet{
             Task{
                 try await fetchAllproductsCart()
+                 calculateTotalCost()
             }
         }
     }
@@ -70,12 +72,23 @@ class Cart_ViewModel : ObservableObject{
     
     // MARK: - calculate Total Sub Price
     func calculateSubPrice(for productId: Int) {
-        let quantity = productQuantities[productId] ?? 0
         if let cart = carts.first(where: { $0.ProductId == productId }) {
             let totalSubPrice = cart.productPrice * Double( cart.quantity)
             subPrices[productId] = String(format: "%.2f €", totalSubPrice)
         }
     }
+    
+    // MARK: - calculate Total Cost Price
+    func calculateTotalCost(){
+        var totalCost: Double = 0.0
+        for cartItem in carts {
+            let productTotal = cartItem.productPrice * Double(cartItem.quantity)
+            let shippingCost = cartItem.isFreeShgiping ? 0.0 : cartItem.deliveryPrice
+            totalCost += productTotal + shippingCost
+        }
+        self.totalCost = String(format: "%.2f €", totalCost)
+    }
+
     // MARK: - Fetch product details for a given productId
     func fetchProductById(productId: Int) async throws -> Product {
         return try await repos.fetchProductById(productId: productId)
@@ -108,23 +121,7 @@ class Cart_ViewModel : ObservableObject{
             }
         }
     }
-/*
-    // MARK: - Delete a product from favorites by its productId
-    func deleteCartByProductId(productId: Int) async throws {
-        LoggerManager.logInfo("Trying to delete cart with ProductId: \(productId)")
-        for cart in carts {
-            LoggerManager.logInfo("Existing favorite ProductId: \(cart.ProductId)")
-        }
-        if let cart = carts.first(where: { $0.ProductId == productId }) {
-            LoggerManager.logInfo("------------------------ Found cart! --------------------")
-            try await deleteCart(cart: cart)
-            try await repos.updateCartQuantity(productId: productId, newQuantity: newQuantity)
 
-        } else {
-            LoggerManager.logInfo("------------------------ No cart Found --------------------")
-        }
-    }
-*/
 
 }
 
