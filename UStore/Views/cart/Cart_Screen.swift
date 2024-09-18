@@ -12,7 +12,7 @@ struct Cart_Screen: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                /*
+                
                 VStack{
                     if viewModel.cartProducts.isEmpty{
                         NoContentOverlay(
@@ -21,7 +21,7 @@ struct Cart_Screen: View {
                         )
                     }
                 }
-                 */
+                 
                 ScrollView {
                
                     VStack {
@@ -39,13 +39,9 @@ struct Cart_Screen: View {
                 }
             
             }
-        }.onAppear{
-            Task{
-               try await viewModel.fetchAllproductsCart()
-            }
         }
         
-            if viewModel.isLoading && viewModel.cartProducts.isEmpty{
+            if viewModel.isLoading {
             LoadingView()
                 .edgesIgnoringSafeArea(.all)
         }

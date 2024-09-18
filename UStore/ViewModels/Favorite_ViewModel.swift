@@ -14,6 +14,7 @@ class Favorite_ViewModel: ObservableObject {
     private var repos : UStore_RepositoryImpl
     @Published var isLoading: Bool = false
     @Published var favoriteProducts: [Product] = []
+    @Published var carts   = [Cart]()
     @Published var favorites   = [Favorite](){
         didSet{
             Task{
@@ -21,9 +22,7 @@ class Favorite_ViewModel: ObservableObject {
             }
         }
     }
-    var carts: [Cart] {
-        repos.carts
-    }
+  
     var scriptions = Set<AnyCancellable>()
     
     var hasFavorites: Bool {
@@ -34,7 +33,11 @@ class Favorite_ViewModel: ObservableObject {
     init() {
         repos = UStore_RepositoryImpl()
         repos.fevoriets.assign(to: \.favorites , on: self).store(in: &scriptions)
-        LoggerManager.logInfo("Count the favorites  in viewModel   repo favorites count: ---------------- > \(repos.fevoriets.count())")
+        /*
+        repos.carts
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$carts)
+        */
     }
     
     

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct Navigatoreator_Screen: View {
-   // @StateObject  var favoriteViewModel  = Favorite_ViewModel()
-   // @StateObject  var cartViewModel  = Cart_ViewModel()
+
     var body: some View {
         TabView {
             ForEach(Tab.allCases) { tab in
@@ -21,10 +20,6 @@ struct Navigatoreator_Screen: View {
             }
        }
         .accentColor(Colors.primary.color())
-     //   .environmentObject(favoriteViewModel)
-     //   .environmentObject(cartViewModel)
-        
-        
     }
 }
 

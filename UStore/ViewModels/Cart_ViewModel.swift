@@ -11,19 +11,28 @@ import os
 
 @MainActor
 class Cart_ViewModel : ObservableObject{
-    @Published var isLoading: Bool = false
     private var repos : UStore_RepositoryImpl
+    @Published var isLoading: Bool = false
     @Published var productQuantities: [Int: Int] = [:]
     @Published var cartProducts: [Product] = []
     @Published var subPrices: [Int: String] = [:]
-    var carts: [Cart] {
-        repos.carts
+    var scriptions = Set<AnyCancellable>()
+    @Published var carts   = [Cart](){
+        didSet{
+            Task{
+                try await fetchAllproductsCart()
+            }
+        }
     }
+  
+    
     init() {
         self.repos = UStore_RepositoryImpl()
+        repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
     }
     // MARK: - fetch all Product from Firestore and sent to screen
     func fetchAllproductsCart() async throws {
+        self.isLoading = true
         LoggerManager.logInfo("Count the cvart  in viewModel   fetch All carts: ---------------- > \(carts.count)")
         cartProducts.removeAll()
         for cart in carts {
@@ -34,7 +43,7 @@ class Cart_ViewModel : ObservableObject{
             self.isLoading = false
         }
         LoggerManager.logInfo("Count the cartProducts  in viewModel   fetch All Products from Cart: ---------------- > \(cartProducts.count)")
-    
+        self.isLoading = false
     }
     // MARK: - add Product to Cart
     func addToCart(productId: Int) async throws {
@@ -46,14 +55,7 @@ class Cart_ViewModel : ObservableObject{
             try  repos.createCart(product: product)
         }
     }
-    // MARK: - calculate Total Sub Price
-    func calculateSubPrice(for productId: Int) {
-        let quantity = productQuantities[productId] ?? 0
-        if let cart = carts.first(where: { $0.ProductId == productId }) {
-            let totalSubPrice = cart.productPrice * Double(quantity)
-            subPrices[productId] = String(format: "%.2f €", totalSubPrice)
-        }
-    }
+
     // MARK: - calculate Quantity Per Product
     func calculateQuantityPerproduct() {
         productQuantities.removeAll()
@@ -63,6 +65,15 @@ class Cart_ViewModel : ObservableObject{
             } else {
                 productQuantities[cart.ProductId] = cart.quantity
             }
+        }
+    }
+    
+    // MARK: - calculate Total Sub Price
+    func calculateSubPrice(for productId: Int) {
+        let quantity = productQuantities[productId] ?? 0
+        if let cart = carts.first(where: { $0.ProductId == productId }) {
+            let totalSubPrice = cart.productPrice * Double( cart.quantity)
+            subPrices[productId] = String(format: "%.2f €", totalSubPrice)
         }
     }
     // MARK: - Fetch product details for a given productId

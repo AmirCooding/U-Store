@@ -12,11 +12,7 @@ class ProductCard_ViewModel: ObservableObject {
     private var repos: UStore_RepositoryImpl
     @Published var isLiked: Bool = false
     @Published var favorites: [Favorite] = []
-    
-    var carts: [Cart] {
-        repos.carts
-    }
-    
+    @Published var carts   : [Cart] = []
     private var subscriptions = Set<AnyCancellable>() // Store subscriptions here
     
     init() {
@@ -24,7 +20,10 @@ class ProductCard_ViewModel: ObservableObject {
         repos.fevoriets
             .receive(on: DispatchQueue.main)
             .assign(to: &$favorites)
-        
+          
+        repos.carts
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$carts)
     }
     
     func toggleColorFavoriteIcon(productId: Int) async throws {

@@ -10,10 +10,7 @@ import Combine
 
 
 struct UStore_RepositoryImpl : UStore_Repository{
-
-    
-    
- 
+  
 
     // MARK: - Call API
     func fetchAllProducts() async throws -> [Product] {try await api.fetchProducts()}
@@ -40,7 +37,7 @@ struct UStore_RepositoryImpl : UStore_Repository{
     func fetchAllProductsFromCart() async throws -> [Cart] {try await FFCartManager.shared.fetchAllProductdFromCart()}
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws {try await FFCartManager.shared.updateCartQuantity(productId: productId, newQuantity: newQuantity)}
     func deleteCart(cart: Cart) async throws {try await FFCartManager.shared.deleteCart(cart: cart)}
-    var carts: [Cart] { FFCartManager.shared.carts}
+    var carts: AnyPublisher<[Cart], Never> {FFCartManager.shared.$carts.eraseToAnyPublisher()}
     
     // MARK: - Supply Categroies
     func fetchCategroy(category: String) async throws -> [Product] {  try await api.fetchCategroy(category: category)}

@@ -12,11 +12,10 @@ import FirebaseAuth
 import Combine
 
 
-@Observable
+
 class FFCartManager  {
-    
     static let shared  = FFCartManager()
-    var carts: [Cart] = []
+    @Published var carts: [Cart] = []
     private let dbCollection = Firestore.firestore().collection("carts")
     private let subject = PassthroughSubject<[Cart], Never>()
     private var listener: ListenerRegistration?
@@ -32,17 +31,13 @@ class FFCartManager  {
                 return
             }
             
-            guard let documents = snapshot?.documents else {
-                print("No documents in favorites collection")
-                return
-            }
-            
-            let updatedCart = documents.compactMap { snapshot in
+            let updatedCarts = snapshot?.documents.compactMap { snapshot in
                 try? snapshot.data(as: Cart.self)
-            }
+            } ?? []
             
+            print("Fetched \(updatedCarts.count) cart from snapshot listener")
             // Send the updated carts through the Combine subject
-            self.subject.send(updatedCart)
+            self.subject.send(updatedCarts)
         }
         
         // Subscribe to subject and update the local carts array when changes occur
@@ -51,6 +46,10 @@ class FFCartManager  {
         }.store(in: &cancellables)
     }
     
+    func addListenerForAllUserCartProducts() async throws{
+        dbCollection.addSnapshotListener{querySnapshot , error in
+        }
+    }
     
     
     // MARK: - Create Favorite
@@ -107,10 +106,13 @@ class FFCartManager  {
     // MARK: - Fetch All Favorites (one-time fetch)
     func fetchAllProductdFromCart() async throws -> [Cart] {
         let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()
-        let carts = snapshot.documents.compactMap { document in
+        let fetchCarts = snapshot.documents.compactMap { document in
             try? document.data(as: Cart.self)
         }
         print("Fetched \(carts.count) favorites")
+        DispatchQueue.main.async {
+            self.carts = fetchCarts
+        }
         return carts
     }
     
