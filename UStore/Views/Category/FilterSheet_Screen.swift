@@ -7,14 +7,13 @@
 
 import SwiftUI
 struct FilterSheet_Screen: View {
-   var viewModel: Home_ViewModel
+    var viewModel: Home_ViewModel
     var category: String
     @Binding var filteredProducts: [Product]
-    
     @Environment(\.presentationMode) var presentationMode
     @State var min: String = ""
     @State var max: String = ""
-    @State var selectedRating: Int = 3
+    @State var selectedRating: Int = 0
     
     var body: some View {
         VStack(spacing:20){
@@ -39,7 +38,7 @@ struct FilterSheet_Screen: View {
                     .padding(.leading, 20)
                 Spacer()
             }
-
+            
             HStack {
                 Spacer()
                 CustomTextField(text: $min, placeholder: "0.00", title: "Min", showIcon: false)
@@ -52,31 +51,44 @@ struct FilterSheet_Screen: View {
             }
             .padding(.top ,10)
             .padding(.bottom ,50)
-
+            
             Divider()
-
+            
             HStack {
                 Text("Rate")
                     .font(GilroyFonts.font(style: .semiBold, size: 18))
                     .padding(.leading, 20)
                 Spacer()
             }
+            
             HStack {
-                Text("From")
-                    .font(GilroyFonts.font(style: .thin, size: 18))
-                    .padding(.leading, 20)
+                Text("Select Rating")
+                    .font(.headline)
                 Spacer()
-
+                
+                
                 Picker("Rating", selection: $selectedRating) {
-                    ForEach(1..<6) { rating in
-                        Text("\(rating) stars").tag(rating)
+                    ForEach(0..<6) { rating in
+                        if rating == 0 {
+                            Text("Not selected").tag(0)
+                        } else {
+                            Text("\(rating) stars").tag(rating)
+                        }
                     }
                 }
                 .pickerStyle(.automatic)
                 .tint(Colors.primary.color())
                 .padding(.horizontal, 20)
+                .onChange(of: selectedRating) { oldValue, newValue in
+                    print("Rating changed from: \(oldValue) to: \(newValue)")
+                }
+                
+                
             }
-
+            .padding()
+            
+            
+            
             CustomButton(
                 text: "Search",
                 textColor: Colors.white.color(),
@@ -84,11 +96,20 @@ struct FilterSheet_Screen: View {
                 action: {
                     let minPrice = Double(min) ?? 0.00
                     let maxPrice = Double(max) ?? Double.greatestFiniteMagnitude
+                    
                     Task {
-                        // Apply filtering
-                        let results = try await viewModel.filterProductsByPrice(min: minPrice, max: maxPrice, category: self.category)
-                        filteredProducts = results  // Update the filtered list
-                        presentationMode.wrappedValue.dismiss()
+                        do {
+                            
+                            if selectedRating == 0 {
+                                filteredProducts = try await viewModel.filterProductsByPrice(min: minPrice, max: maxPrice, category: self.category)
+                            } else {
+                                filteredProducts = try await viewModel.filterProductsByRatingAndPrice(min: minPrice, max: maxPrice, selectedRating: selectedRating , category: self.category)
+                            }
+                            presentationMode.wrappedValue.dismiss()
+                            
+                        } catch {
+                            LoggerManager.logInfo("Filtering error: \(error.localizedDescription)")
+                        }
                     }
                 },
                 image: nil

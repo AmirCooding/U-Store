@@ -65,7 +65,7 @@ struct CategoryList_Screen: View {
                 .navigationTitle("\(category.title)")
                 .task {
                     // Load products for category initially
-                   let result =  await viewModel.loadCategoryProducts(category: category.category.rawValue)
+                  await viewModel.loadCategoryProducts(category: category.category.rawValue)
                     filteredProducts = viewModel.productsForCategory
                     isLoading = false
                 }

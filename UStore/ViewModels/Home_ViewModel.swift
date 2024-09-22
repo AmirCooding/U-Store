@@ -76,7 +76,57 @@ import Combine
     }
     
 //MARK: - Method to filter products by price -
-    
+    func filterProductsByRatingAndPrice(min: Double?, max: Double?, selectedRating: Int, category: String) async throws -> [Product] {
+        let products = await loadCategoryProducts(category: category)
+        var filteredProducts = products
+        let ratingRange = getRatingRange(selectedRating: selectedRating)
+
+        if ratingRange != nil {
+            filteredProducts = filteredProducts.filter { product in
+                product.rating.rate ?? 0.00 >= ratingRange!.min && product.rating.rate ?? 0.00 < ratingRange!.max
+                
+            }
+            LoggerManager.logInfo("rating by products rating : \(filteredProducts.count)")
+        }
+
+        if let min = min, let max = max {
+            filteredProducts = filteredProducts.filter { product in
+                product.currentPrice >= min && product.currentPrice <= max
+            }
+        } else if let min = min {
+            filteredProducts = filteredProducts.filter { product in
+                product.currentPrice >= min
+            }
+        } else if let max = max {
+            filteredProducts = filteredProducts.filter { product in
+                product.currentPrice <= max
+            }
+        }
+
+        LoggerManager.logInfo("Products before filtering: \(products.count)")
+        LoggerManager.logInfo("Filtered products count: \(filteredProducts.count)")
+        
+        return filteredProducts
+    }
+
+   
+    private func getRatingRange(selectedRating: Int) -> (min: Double, max: Double)? {
+        switch selectedRating {
+        case 1:
+            return (1.0, 2.0)
+        case 2:
+            return (2.0, 3.0)
+        case 3:
+            return (3.0, 4.0)
+        case 4:
+            return (4.0, 5.0)
+        case 5:
+            return (5, Double.greatestFiniteMagnitude)
+        default:
+            return nil 
+        }
+    }
+
     func filterProductsByPrice(min: Double, max: Double, category: String) async throws -> [Product] {
         let products = await loadCategoryProducts(category: category)
         let filteredProducts = products.filter { product in
@@ -87,6 +137,17 @@ import Combine
         
         return filteredProducts
     }
+    func filterProductsByRating(selectedRating: Int, category: String) async throws -> [Product] {
+        let products = await loadCategoryProducts(category: category)
+        let filteredProducts = products.filter { product in
+            return selectedRating == 0 || (product.rating.rate ?? 0) == Double(selectedRating)
+        }
+        LoggerManager.logInfo("Products before filtering: \(products.count)")
+        LoggerManager.logInfo("Filtered products count: \(filteredProducts.count)")
+        
+        return filteredProducts
+    }
+
     
     
 }
