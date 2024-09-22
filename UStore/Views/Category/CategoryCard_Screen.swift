@@ -25,7 +25,7 @@ struct CategoryCard_Screen: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .cornerRadius(20)
-                .frame(width: .infinity , height: 230)
+                .frame(width: .infinity , height: 200)
                 .padding(.horizontal, 20)
             }
         }

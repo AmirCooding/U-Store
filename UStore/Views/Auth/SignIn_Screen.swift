@@ -29,9 +29,10 @@ struct SignIn_Screen: View {
                         .padding(.bottom, 5)
                         .padding(.top, 20)
                     // MARK: - change it
-                    CustomTextField(text: $viewModel.authForm.email, placeholder: "Enter your Email", title: "Email", iconName: nil, showIcon: false)
+                    CustomTextField(text: $viewModel.authForm.email, placeholder: "Enter your Email", title: "Email", showIcon: false)
                     
-                    CustomTextField(text: $viewModel.authForm.password, placeholder: "Enter your Password", title: "Password", isSecure: true)
+                    // Password TextField
+                    CustomTextField(text: $viewModel.authForm.password, placeholder: "Enter your Password", title: "Password",iconBefor: "eye.slash.fill" , iconAfter: "eye" , isSecure: true)
                     
                     HStack {
                         Spacer()
@@ -45,7 +46,7 @@ struct SignIn_Screen: View {
                     }
                     .padding(.top, 10)
                     
-                    CustomButton(
+                    CustomButton( 
                         text: "Sign In",
                         textColor: .white,
                         backgroundColor: !viewModel.authForm.email.isEmpty &&  !viewModel.authForm.password.isEmpty ? Colors.primary.color() : Colors.primary.color().opacity(0.6),
@@ -58,11 +59,13 @@ struct SignIn_Screen: View {
                     )
                     .disabled(viewModel.authForm.email.isEmpty && viewModel.authForm.password.isEmpty)
                     .padding(.top, 20)
+                    /*
                     .navigationDestination(isPresented: $viewModel.authForm.navigateToView) {
                         Navigatoreator_Screen()
                             .navigationBarBackButtonHidden(true)
                     }
                     
+                     */
                     HStack(alignment: .center) {
                         Spacer()
                         Text("Don't have an Account?")
@@ -94,6 +97,7 @@ struct SignIn_Screen: View {
                         image: Image("logo-google")
                     ).padding(.top, 20)
                         .navigationDestination(isPresented: $viewModel.authForm.navigateToView) {
+                           
                             Navigatoreator_Screen()
                                 .navigationBarBackButtonHidden(true)
                         }

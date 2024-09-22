@@ -25,13 +25,16 @@ struct Home_Screen: View {
                     HStack{
                         TabView {
                             ForEach(viewModel.categories, id: \.id) { category in
-                                CategoryCard_Screen(category: category)
+                            
+                                    CategoryCard_Screen(category: category)
+                                
                             }
                         }
-                    }.frame( width: .infinity , height: 250)
-                    .cornerRadius(10)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                 
+                      
+                    }.frame( width: .infinity , height: 200)
+                        .cornerRadius(10)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                    
                     
                     // Exclusive Offer Header
                     HStack {
@@ -84,25 +87,18 @@ struct Home_Screen: View {
                         }
                         
                     }
-                       
-                    
                 }
                 .padding(.bottom, 10)
                 
             }
             
-            
         }
         
-        
-    }
-    private var noContentOverlay: some View {
-        Text("No Product")
-            .font(.largeTitle)
-            .foregroundStyle(.gray)
     }
     
 }
+
+
 
 #Preview {
     Home_Screen()

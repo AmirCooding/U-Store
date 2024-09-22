@@ -28,7 +28,7 @@ struct ForgetPassword_Screen: View {
                     text: $viewModel.authForm.email,
                     placeholder: "Enter your Email",
                     title: "Email",
-                    iconName: "envelope",
+                    iconBefor:  "envelope",
                     showIcon: false
                 )
                 .padding(.top, 20)

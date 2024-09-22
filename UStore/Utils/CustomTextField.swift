@@ -12,7 +12,8 @@ struct CustomTextField: View {
     @Binding var text: String
     var placeholder: String
     var title: String
-    var iconName: String? = nil
+    var iconBefor: String? = nil
+    var iconAfter: String? = nil
     var showIcon: Bool = true
     var isSecure: Bool = false
     // State for toggling password visibility
@@ -39,7 +40,7 @@ struct CustomTextField: View {
                     }
 
                     if showIcon {
-                        Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                        Image(systemName: (isPasswordVisible ? iconBefor : iconAfter) ?? "")
                             .foregroundColor(Colors.secondary.color())
                             .padding(.trailing, 15)
                             .onTapGesture {
@@ -67,7 +68,8 @@ struct CustomTextField_Previews: PreviewProvider {
             text: $email,
             placeholder: "Enter your Email",
             title: "Email",
-            iconName: "envelope",
+            iconBefor:  "envelope",
+            iconAfter: "eye",
             showIcon: true
         )
         .padding()

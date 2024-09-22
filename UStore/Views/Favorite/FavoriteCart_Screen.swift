@@ -12,11 +12,9 @@ import SwiftUI
 struct FavoriteCart_Screen: View {
     var product: Product
     @EnvironmentObject  private var viewModel  :  Favorite_ViewModel
-   
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                
                 HStack{
                     HStack {
                         AsyncImage(url: product.artworkUrl) { image in
@@ -123,7 +121,7 @@ struct FavoriteCart_Screen: View {
                 
             }.padding()
                 .background(Colors.secondary.color().opacity(0.08))
-            
+            Spacer()
             
         }
     }
@@ -131,6 +129,7 @@ struct FavoriteCart_Screen: View {
 #Preview {
     FavoriteCart_Screen(product: .sample)
         .environmentObject(Favorite_ViewModel())
+ 
      
 }
 

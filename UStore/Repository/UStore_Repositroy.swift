@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-
+import SwiftUI
 protocol UStore_Repository {
     
     // MARK: -   User
@@ -27,18 +27,29 @@ protocol UStore_Repository {
     
     // MARK: - CRUD Favorites
     func createFavorite(productId : Int) throws
-    func fetchAllFavorites() async throws -> [Favorite]
+    func fetchAllFavorites() async throws ->[Favorite]
     func deleteFavorite(favorite: Favorite) async throws
     var fevoriets : AnyPublisher <[Favorite] , Never> {get}
+    func removeFavoriteListener()
     
     
     // MARK: - CRUD Cart
     func createCart(product: Product) throws
+    //func createCart(productId: Int) throws
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws
-    func fetchAllProductsFromCart() async throws -> [Cart]
-    func deleteCart(cart: Cart) async throws
-    var carts : AnyPublisher<[Cart], Never>  { get }
+    func fetchAllProductsFromCart() async throws ->[CartItem] 
+    func deleteCart(cart: CartItem) async throws
+    var carts : AnyPublisher<[CartItem], Never>  { get }
+    func removeCartListener()
     
-    
+    // MARK: - CRUD Profile
+
+    func createUserProfile( profile: UserProfile, image: UIImage?) async throws
+    func fetchUserProfile() async throws
+    func updateUserProfile(profile: UserProfile, image: UIImage?) async throws
+    func deleteUserProfile() async throws
+    var userProfile : AnyPublisher <UserProfile , Never> {get}
+    func removeProfileListener()
+ 
 }
 

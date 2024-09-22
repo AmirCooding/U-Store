@@ -6,17 +6,17 @@
 //
 
 import SwiftUI
-import SwiftUI
-
 struct FilterSheet_Screen: View {
-    private var viewModel  = Explore_ViewModel()
+   var viewModel: Home_ViewModel
+    var category: String
+    @Binding var filteredProducts: [Product]
+    
     @Environment(\.presentationMode) var presentationMode
     @State var min: String = ""
     @State var max: String = ""
-    @State var selectedRating: Int = 3 
+    @State var selectedRating: Int = 3
     
     var body: some View {
-        
         VStack(spacing:20){
             HStack {
                 Text("Filter")
@@ -39,7 +39,7 @@ struct FilterSheet_Screen: View {
                     .padding(.leading, 20)
                 Spacer()
             }
-            
+
             HStack {
                 Spacer()
                 CustomTextField(text: $min, placeholder: "0.00", title: "Min", showIcon: false)
@@ -49,24 +49,24 @@ struct FilterSheet_Screen: View {
                 CustomTextField(text: $max, placeholder: "0.00", title: "Max", showIcon: false)
                     .frame(width: 140, height: 20)
                 Spacer()
-                
-            }.padding(.top ,10)
-             .padding(.bottom , 50)
-            
+            }
+            .padding(.top ,10)
+            .padding(.bottom ,50)
+
             Divider()
-            
+
             HStack {
                 Text("Rate")
                     .font(GilroyFonts.font(style: .semiBold, size: 18))
                     .padding(.leading, 20)
                 Spacer()
             }
-                HStack{
+            HStack {
                 Text("From")
                     .font(GilroyFonts.font(style: .thin, size: 18))
                     .padding(.leading, 20)
                 Spacer()
-                
+
                 Picker("Rating", selection: $selectedRating) {
                     ForEach(1..<6) { rating in
                         Text("\(rating) stars").tag(rating)
@@ -76,24 +76,38 @@ struct FilterSheet_Screen: View {
                 .tint(Colors.primary.color())
                 .padding(.horizontal, 20)
             }
-            
+
             CustomButton(
-            text: "Search",
-            textColor: Colors.white.color(),
-            backgroundColor: Colors.primary.color(),
-            action: {
-            viewModel.filterProductsByPrice(min: Double(min) ?? 0.00, max: Double(max) ?? 0.00)
-                
-            },
-            image: nil
-            ).padding(.horizontal , 20)
+                text: "Search",
+                textColor: Colors.white.color(),
+                backgroundColor: Colors.primary.color(),
+                action: {
+                    let minPrice = Double(min) ?? 0.00
+                    let maxPrice = Double(max) ?? Double.greatestFiniteMagnitude
+                    Task {
+                        // Apply filtering
+                        let results = try await viewModel.filterProductsByPrice(min: minPrice, max: maxPrice, categroy: self.category)
+                        filteredProducts = results  // Update the filtered list
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                },
+                image: nil
+            )
+            .padding(.horizontal, 20)
             Spacer()
-        }.padding(.top, 20)
-        
+        }
+        .padding(.top, 20)
     }
-    
 }
 
+
 #Preview {
-    FilterSheet_Screen()
+    // Mock viewModel for preview
+    let mockViewModel = Home_ViewModel()
+    @State var mockFilteredProducts: [Product] = [.sample]
+    return FilterSheet_Screen(
+        viewModel: mockViewModel,
+        category: "Womans",
+        filteredProducts: $mockFilteredProducts
+    )
 }

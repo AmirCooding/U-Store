@@ -18,18 +18,20 @@ class Cart_ViewModel : ObservableObject{
     @Published var subPrices: [Int: String] = [:]
     @Published var totalCost: String = "0.00"
     var scriptions = Set<AnyCancellable>()
-    @Published var carts   = [Cart](){
+    
+    @Published var carts   = [CartItem](){
         didSet{
             Task{
                 try await fetchAllproductsCart()
-                 calculateTotalCost()
+                calculateTotalCost()
             }
         }
     }
   
-    
+
     init() {
         self.repos = UStore_RepositoryImpl()
+     
         repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
     }
     // MARK: - fetch all Product from Firestore and sent to screen
@@ -51,11 +53,16 @@ class Cart_ViewModel : ObservableObject{
     func addToCart(productId: Int) async throws {
         if let selectedProduct = carts.first(where: { $0.ProductId == productId }) {
             let newQuantity = selectedProduct.quantity + 1
-            try await repos.updateCartQuantity(productId: productId, newQuantity: newQuantity)
+            try await updateCartQuantity(productId: productId, newQuantity: newQuantity)
         } else {
-            let product = try await repos.fetchProductById(productId: productId)
+           let product = try await repos.fetchProductById(productId: productId)
             try  repos.createCart(product: product)
+          //  try  repos.createCart(productId: productId)
         }
+    }
+    
+    func updateCartQuantity(productId: Int, newQuantity: Int) async throws {
+        try await repos.updateCartQuantity(productId: productId, newQuantity: newQuantity)
     }
 
     // MARK: - calculate Quantity Per Product
@@ -94,7 +101,7 @@ class Cart_ViewModel : ObservableObject{
         return try await repos.fetchProductById(productId: productId)
     }
     // MARK: - Delete a cart from favorites
-    func deleteCart(cart: Cart) async throws {
+    func deleteCart(cart: CartItem) async throws {
         guard let currentQuantity = productQuantities[cart.ProductId], currentQuantity > 0 else {
             return
         }

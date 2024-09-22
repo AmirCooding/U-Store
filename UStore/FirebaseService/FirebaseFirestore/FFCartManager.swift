@@ -15,14 +15,15 @@ import Combine
 
 class FFCartManager  {
     static let shared  = FFCartManager()
-    @Published var carts: [Cart] = []
+    @Published var carts: [CartItem] = []
     private let dbCollection = Firestore.firestore().collection("carts")
-    private let subject = PassthroughSubject<[Cart], Never>()
+    private let subject = PassthroughSubject<[CartItem], Never>()
     private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
-    private let userId = FFUserManager.shared.auth.currentUser?.uid
+    //  private let userId = FFUserManager.shared.auth.currentUser?.uid
     
-    // MARK: - Initialization
+    // MARK: - Initialization -
+    
     private init() {
         // Set up a snapshot listener to automatically update the carts list
         listener = dbCollection.addSnapshotListener { snapshot, error in
@@ -32,7 +33,7 @@ class FFCartManager  {
             }
             
             let updatedCarts = snapshot?.documents.compactMap { snapshot in
-                try? snapshot.data(as: Cart.self)
+                try? snapshot.data(as: CartItem.self)
             } ?? []
             
             print("Fetched \(updatedCarts.count) cart from snapshot listener")
@@ -52,13 +53,14 @@ class FFCartManager  {
     }
     
     
-    // MARK: - Create Favorite
+    // MARK: - Create Favorite -
+    
     func createCart(product : Product) throws {
-        guard let userId = userId else {
+        guard let userId =  Auth.auth().currentUser?.uid else {
             print("No valid user ID to create favorite")
             return
         }
-        let cart = Cart( userId: userId, ProductId: product.id , isFreeShgiping: true , quantity: 1 , productPrice: product.currentPrice , deliveryPrice: 5.99)
+        let cart = CartItem( userId: userId, ProductId: product.id , isFreeShgiping: true , quantity: 1 , productPrice: product.currentPrice , deliveryPrice: 5.99)
         do {
             let documentRef = try dbCollection.addDocument(from: cart)
             print("Favorite created with ID: \(documentRef.documentID)")
@@ -68,9 +70,10 @@ class FFCartManager  {
         }
     }
     
-    // MARK: - Update Cart Quantity
+    // MARK: - Update Cart Quantity -
+    
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws {
-        guard let userId = userId else {
+        guard let userId =  Auth.auth().currentUser?.uid else {
             print("No valid user ID to update cart")
             return
         }
@@ -78,24 +81,24 @@ class FFCartManager  {
             .whereField("userId", isEqualTo: userId)
             .whereField("ProductId", isEqualTo: productId)
             .getDocuments()
-
+        
         guard let document = snapshot.documents.first else {
             print("No cart found for this product")
             return
         }
-        
         try await dbCollection.document(document.documentID).updateData([
             "quantity": newQuantity
         ])
         
         print("Cart updated with new quantity: \(newQuantity)")
     }
-
     
     
     
-    // MARK: - Delete Favorite
-    func deleteCart(cart: Cart) async throws {
+    
+    // MARK: - Delete Favorite -
+    
+    func deleteCart(cart: CartItem) async throws {
         guard let id = cart.id else {
             print("Failed to delete carts: no document ID")
             throw HttpError.requestFailed
@@ -103,11 +106,13 @@ class FFCartManager  {
         try await dbCollection.document(id).delete()
     }
     
-    // MARK: - Fetch All Favorites (one-time fetch)
-    func fetchAllProductdFromCart() async throws -> [Cart] {
+    // MARK: - Fetch All Favorites (one-time fetch) -
+    
+    func fetchAllProductdFromCart() async throws -> [CartItem] {
+        let userId =  Auth.auth().currentUser?.uid
         let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()
         let fetchCarts = snapshot.documents.compactMap { document in
-            try? document.data(as: Cart.self)
+            try? document.data(as: CartItem.self)
         }
         print("Fetched \(carts.count) favorites")
         DispatchQueue.main.async {
@@ -115,9 +120,8 @@ class FFCartManager  {
         }
         return carts
     }
-    
-    // MARK: - Remove Listener
-    func removeListener() {
+    // MARK: - Remove Listener -
+    func removeCartListener() {
         carts = []
         listener?.remove()
         listener = nil

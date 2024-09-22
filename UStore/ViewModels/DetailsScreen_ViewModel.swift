@@ -1,19 +1,22 @@
 //
-//  ProductsCard_ViewModel.swift
+//  DetailsScreen_ViewModel.swift
 //  UStore
 //
-//  Created by Amir Lotfi on 12.09.24.
+//  Created by Amir Lotfi on 18.09.24.
 //
+
+import Foundation
+
 import Foundation
 import Combine
 
 @MainActor
-class ProductCard_ViewModel: ObservableObject {
+class DetailsScreen_ViewModel: ObservableObject {
     private var repos: UStore_RepositoryImpl
     @Published var isLiked: Bool = false
     @Published var favorites: [Favorite] = []
     @Published var carts   : [CartItem] = []
-    private var subscriptions = Set<AnyCancellable>() // Store subscriptions here
+    private var subscriptions = Set<AnyCancellable>() 
     var scriptions = Set<AnyCancellable>()
     init() {
         repos = UStore_RepositoryImpl()

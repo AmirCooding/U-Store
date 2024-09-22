@@ -65,8 +65,8 @@ struct ProductCard: View {
                                     .foregroundColor(Colors.secondary.color())
                                 
                                 Text(product.discountedPrice)
-                                    .font(GilroyFonts.font(style: .bold, size: 18))
-                                    .foregroundColor(.green)
+                                    .bold()
+                                    .foregroundColor(Colors.primary.color())
                             }
                             
                             Spacer()

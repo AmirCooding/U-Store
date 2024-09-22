@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class FFUserManager {
     var appUser: AppUser?
-    
+    private let dbCollection = Firestore.firestore().collection("users")
     static let shared = FFUserManager()
     var auth = Auth.auth()
 
@@ -20,7 +20,7 @@ class FFUserManager {
     func createUser(id: String, email: String) {
         let user = AppUser(id: id, email: email)
         do {
-            try Firestore.firestore().collection("users").document(id).setData(from: user)
+            try dbCollection.document(id).setData(from: user)
             print("User created successfully!")
         } catch {
             print("Error creating user: \(error.localizedDescription)")
@@ -30,7 +30,7 @@ class FFUserManager {
     
     // Mark : Fetch User in Firebase Firestore
     func fetchUser(id: String) {
-        Firestore.firestore().collection("users").document(id).getDocument { document, error in
+        dbCollection.document(id).getDocument { document, error in
             if let error {
                 print("Fetch user failed: \(error.localizedDescription)")
                 return

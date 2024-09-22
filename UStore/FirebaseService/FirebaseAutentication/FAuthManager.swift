@@ -10,13 +10,12 @@ import FirebaseFirestore
 import Firebase
 import FirebaseAuth
 import GoogleSignIn
+import Combine
 
 class FAuthManager {
     var user: User?
-    var userAuth: User?
     static let shared = FAuthManager()
     private(set) var error: String = ""
-
     
     var isUserSignedIn: Bool {
         return user != nil
@@ -30,7 +29,7 @@ class FAuthManager {
             throw AuthError.inValidEmail
         }
         print("User with email '\(email)' is registered with id '\(authResult.user.uid)'")
-        try await self.signIn(email: email, password: password)
+       // try await self.signIn(email: email, password: password)
         FFUserManager.shared.createUser(id: authResult.user.uid, email: email)
     
     }

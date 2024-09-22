@@ -12,11 +12,24 @@ import GoogleSignIn
 
 class UStore_UserAuth_ViewModel : ObservableObject{
     var repo : UStore_RepositoryImpl
+    @Published var selectedImage: UIImage? = nil
     @Published var authForm : AuthForme
+    @Published var profile : UserProfile
+    var email: String {
+        get {
+            return authForm.email
+        }
+        set {
+            authForm.email = newValue
+            profile.email = newValue
+        }
+    }
+
     
     init() {
         repo = UStore_RepositoryImpl()
         authForm = AuthForme()
+        profile = UserProfile()
     }
     
     var userIsLogin: Bool {
@@ -103,20 +116,27 @@ class UStore_UserAuth_ViewModel : ObservableObject{
             }
             return
         }
-        do{
+        do {
             try await repo.signUp(email: authForm.email, password: authForm.password)
+            guard let userId = Auth.auth().currentUser?.uid else {
+                throw AuthError.failedSignUp
+            }
+            var profile = profile
+            profile.userId = userId
+            try await repo.createUserProfile(profile: profile, image: selectedImage)
             DispatchQueue.main.async {
                 self.authForm.isLoading = true
                 self.authForm.navigateToView = true
                 self.authForm.isLoading = false
             }
-        }catch{
+        } catch {
             DispatchQueue.main.async {
                 self.authForm.alertMessage = AuthError.failedSignUp.localizedDescription
                 self.authForm.showAlert = true
             }
             return
         }
+
     }
 
     

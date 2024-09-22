@@ -26,7 +26,7 @@ class FFFavoriteManager  : ObservableObject{
     private let subject = PassthroughSubject<[Favorite], Never>()
     private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
-    private let userId = FFUserManager.shared.auth.currentUser?.uid
+
     
     // MARK: - Initialization
     private init() {
@@ -62,15 +62,16 @@ class FFFavoriteManager  : ObservableObject{
     
     // MARK: - Create Favorite
     func createFavorite(productId: Int) throws {
-        guard let userId = userId else {
+        guard let userId =  Auth.auth().currentUser?.uid else {
             print("No valid user ID to create favorite")
             return
         }
         let favorite = Favorite(userId: userId, ProductId: productId, isFavorite: true)
         
         do {
-            let documentRef = try dbCollection.addDocument(from: favorite)
-            print("Favorite created with ID: \(documentRef.documentID)")
+            try dbCollection.addDocument(from: favorite)
+          // try dbCollection.document(userId).setData(from : favorite)
+            LoggerManager.logInfo("Favorite is created with User ID \(userId) ")
         } catch {
             print("Error creating favorite: \(error.localizedDescription)")
             throw error
@@ -91,6 +92,7 @@ class FFFavoriteManager  : ObservableObject{
     
     // MARK: - Fetch All Favorites (one-time fetch)
     func fetchAllFavorites() async throws -> [Favorite] {
+        let userId =  Auth.auth().currentUser?.uid
         let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()
         let fetchedFavorites = snapshot.documents.compactMap { document in
             try? document.data(as: Favorite.self)
@@ -104,12 +106,12 @@ class FFFavoriteManager  : ObservableObject{
     }
 
     // MARK: - Remove Listener
-    func removeListener() {
-        favorites = []
-        listener?.remove()
-        listener = nil
+   func removeFavoriteListener() {
+      favorites = []
+      listener?.remove()
+      listener = nil
     }
     
 }
 
-
+   

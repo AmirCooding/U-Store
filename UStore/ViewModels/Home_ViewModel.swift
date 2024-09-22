@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-@Observable class Home_ViewModel  {
+@Observable  class Home_ViewModel   {
     var categories: [ProductCategory] = []
     var products: [Product] = []
     var productsForCategory : [Product] = []
@@ -26,7 +26,8 @@ import Combine
         }
     }
     
-    //Fetch all Products
+    //MARK: - Fetch all Products -
+  
     private func loadProducts() async {
         do {
             products = try await repos.fetchAllProducts()
@@ -36,7 +37,7 @@ import Combine
         }
     }
     
-    // Method to load Best Seller products from the repository
+    //MARK: - Method to load Best Seller products from the repository -
     private func loadBestsellers() async {
         let sortedProducts = products.sorted(by: { $0.rating.count! > $1.rating.count! })
         bestSeller = Array(sortedProducts.prefix(7))
@@ -44,23 +45,26 @@ import Combine
     }
     
     
-    // Method to load Populare products from the repository
+    //MARK: - Method to load Populare products from the repository -
+   
     private func loadPopulerProducts() async {
         let sortedProducts = products.sorted(by: { $0.rating.rate! > $1.rating.rate! })
         populerProducts = Array(sortedProducts.prefix(7))
     }
     
     
-    // Method to load categories from the repository
+    //MARK: - Method to load categories from the repository -
+  
     func loadCategories() {
         self.categories = repos.loadingCategories()
     }
     
-    
-    func loadCategoryProducts(category : String) async {
+    //MARK: - Method to load Products by  Category -
+   
+    func loadCategoryProducts(category : String) async ->[Product] {
         do {
-            productsForCategory = try await repos.fetchCategroy(category: category)
-            print("Loaded Bestseller Products: \(products)")
+            self.productsForCategory = try await repos.fetchCategroy(category: category)
+         //   print("Loaded Bestseller Products: \(self.productsForCategory)")
         } catch {
             if let httpError = error as? HttpError {
                 print("Could not load Product data: \(httpError.description)")
@@ -68,14 +72,30 @@ import Combine
                 print("An unknown error occurred: \(error.localizedDescription)")
             }
         }
+        return self.productsForCategory
     }
     
+//MARK: - Method to filter products by price -
+  
+    func filterProductsByPrice(min: Double, max: Double ,categroy : String ) async throws -> [Product] {
+        let products =  await loadCategoryProducts(category: categroy)
+        var results : [Product] = []
+        LoggerManager.logInfo("Count der products For Category :\(products.count )")
+        for product in products {
+            if min <= product.currentPrice && product.currentPrice <= max {
+                LoggerManager.logInfo("Product title:\(product.title )")
+                LoggerManager.logInfo("Product title:\(product.currentPrice )")
+
+                results.append(product)
+            }
+                
+        }
+        LoggerManager.logInfo("Count der products For Category after filtering :\(results.count )")
+       return results
+        
+    }
     
-    
-    
-    
-    
-    
+
     
     
 }

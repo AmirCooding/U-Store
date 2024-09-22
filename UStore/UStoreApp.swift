@@ -11,11 +11,11 @@ import Firebase
 
 @main
 struct UStoreApp: App {
-   static let logger = Logger(
+    static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
         category: String(describing: UStoreApp.self)
     )
-
+    
     private var viewModel : UStore_UserAuth_ViewModel
     
     
@@ -26,9 +26,10 @@ struct UStoreApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            if viewModel.userIsLogin {
+            
+            if viewModel.userIsLogin{
                 Navigatoreator_Screen()
-            } else {
+            } else{
                 SignIn_Screen()
             }
         }

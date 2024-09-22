@@ -45,9 +45,7 @@ import Foundation
     }
     
     
-    func filterProductsByPrice(min : Double , max : Double){
-        //TODO filter by price
-    }
+
     
     
     

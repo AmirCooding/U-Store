@@ -12,7 +12,8 @@ struct CategoryList_Screen: View {
     @State private var searchText = ""
     @State private var showSheet = false
     @State private var isLoading = true
-    
+    @State private var filteredProducts: [Product] = []  
+
     private let gridItems = [
         GridItem(.flexible(), spacing: 6),
         GridItem(.flexible(), spacing: 6)
@@ -32,55 +33,52 @@ struct CategoryList_Screen: View {
                                     showSheet.toggle()
                                 }
                                 .padding()
-                            
                         }
                         .sheet(isPresented: $showSheet) {
-                            FilterSheet_Screen()
-                            .presentationDetents([.fraction(0.6)])}
+                            // Pass the filtered products list to the filter sheet
+                            FilterSheet_Screen(viewModel: viewModel, category: category.category.rawValue, filteredProducts: $filteredProducts)
+                                .presentationDetents([.fraction(0.6)])
+                        }
                     }
-                    
+
                     ScrollView(showsIndicators: false) {
                         LazyVGrid(columns: gridItems, spacing: 15) {
-                            ForEach(viewModel.productsForCategory.filter { product in
+                            ForEach(filteredProducts.filter { product in
                                 searchText.isEmpty ? true : product.title.localizedCaseInsensitiveContains(searchText)
                             }) { product in
                                 ProductCard(product: product)
                                     .frame(width: 200, height: 320)
-
                             }
                         }
-        
                     }
                     .overlay {
-                        if viewModel.productsForCategory.isEmpty {
+                        if filteredProducts.isEmpty && !isLoading {
                             NoContentOverlay(
-                                         imageURL: URL(string: "https://i.pinimg.com/736x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg")!,
-                                         overlayText: ""
-                                     )
+                                imageURL: URL(string: "https://i.pinimg.com/736x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg")!,
+                                overlayText: ""
+                            )
                         }
                     }
                     .opacity(isLoading ? 0 : 1)
-                    
                 }
-                
-                .padding(.horizontal , 20)
+                .padding(.horizontal, 20)
                 .navigationTitle("\(category.title)")
                 .task {
-                    await viewModel.loadCategoryProducts(category: category.category.rawValue)
+                    // Load products for category initially
+                   let result =  await viewModel.loadCategoryProducts(category: category.category.rawValue)
+                    filteredProducts = viewModel.productsForCategory
                     isLoading = false
                 }
-                
+
                 if isLoading {
                     LoadingView()
-                        .edgesIgnoringSafeArea(.all) // Make the loading view cover the entire screen
+                        .edgesIgnoringSafeArea(.all)
                 }
             }
-        
         }
-
     }
- 
 }
+
 
 #Preview {
     CategoryList_Screen(category:.sampleCategory)
