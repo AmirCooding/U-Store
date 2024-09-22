@@ -76,26 +76,17 @@ import Combine
     }
     
 //MARK: - Method to filter products by price -
-  
-    func filterProductsByPrice(min: Double, max: Double ,categroy : String ) async throws -> [Product] {
-        let products =  await loadCategoryProducts(category: categroy)
-        var results : [Product] = []
-        LoggerManager.logInfo("Count der products For Category :\(products.count )")
-        for product in products {
-            if min <= product.currentPrice && product.currentPrice <= max {
-                LoggerManager.logInfo("Product title:\(product.title )")
-                LoggerManager.logInfo("Product title:\(product.currentPrice )")
-
-                results.append(product)
-            }
-                
-        }
-        LoggerManager.logInfo("Count der products For Category after filtering :\(results.count )")
-       return results
-        
-    }
     
-
+    func filterProductsByPrice(min: Double, max: Double, category: String) async throws -> [Product] {
+        let products = await loadCategoryProducts(category: category)
+        let filteredProducts = products.filter { product in
+            return product.currentPrice >= min && product.currentPrice <= max
+        }
+        LoggerManager.logInfo("Products before filtering: \(products.count)")
+        LoggerManager.logInfo("Filtered products count: \(filteredProducts.count)")
+        
+        return filteredProducts
+    }
     
     
 }

@@ -86,7 +86,7 @@ struct FilterSheet_Screen: View {
                     let maxPrice = Double(max) ?? Double.greatestFiniteMagnitude
                     Task {
                         // Apply filtering
-                        let results = try await viewModel.filterProductsByPrice(min: minPrice, max: maxPrice, categroy: self.category)
+                        let results = try await viewModel.filterProductsByPrice(min: minPrice, max: maxPrice, category: self.category)
                         filteredProducts = results  // Update the filtered list
                         presentationMode.wrappedValue.dismiss()
                     }
