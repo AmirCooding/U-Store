@@ -97,7 +97,7 @@ class FFFavoriteManager  : ObservableObject{
         let fetchedFavorites = snapshot.documents.compactMap { document in
             try? document.data(as: Favorite.self)
         }
-        print("Fetched \(fetchedFavorites.count) favorites in FFFavoriteManager")
+        LoggerManager.logInfo("Fetched \(fetchedFavorites.count) favorites in FFFavoriteManager for USer ID \(String(describing: userId))")
         DispatchQueue.main.async {
             self.favorites = fetchedFavorites
         }

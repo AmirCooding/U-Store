@@ -9,6 +9,7 @@ import Foundation
 
 import Foundation
 import Combine
+import UIKit
 
 @MainActor
 class DetailsScreen_ViewModel: ObservableObject {
@@ -43,7 +44,7 @@ class DetailsScreen_ViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Add Product to Cart
+    // MARK: - Add Product to Cart -
     func addToCart(productId: Int) async throws {
         if let selectedProduct = carts.first(where: { $0.ProductId == productId }) {
             let newQuantity = selectedProduct.quantity + 1
@@ -55,12 +56,12 @@ class DetailsScreen_ViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Add a Product to Favorites by its productId
+    // MARK: - Add a Product to Favorites by its productId -
     func addProductFavoriteById(productId: Int) async throws {
         try repos.createFavorite(productId: productId)
     }
     
-    // MARK: - Delete a Product from Favorites by its productId
+    // MARK: - Delete a Product from Favorites by its productId -
     func deleteFavoriteByProductId(productId: Int) async throws {
         if let favorite = favorites.first(where: { $0.ProductId == productId }) {
             LoggerManager.logInfo("------------------------ Found Favorite! --------------------")
@@ -68,6 +69,16 @@ class DetailsScreen_ViewModel: ObservableObject {
             isLiked = false
         } else {
             LoggerManager.logInfo("------------------------ No Favorite Found --------------------")
+        }
+    }
+    
+    //MARK: - Custom function to share product details -
+    func shareProductDetails(product: Product) {
+        let message = "Check out this product: \(product.title), Price: \(product.currentPrice)€"
+        let activityController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityController, animated: true, completion: nil)
         }
     }
 }

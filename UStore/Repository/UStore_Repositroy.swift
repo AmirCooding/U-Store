@@ -44,12 +44,13 @@ protocol UStore_Repository {
     
     // MARK: - CRUD Profile
 
-    func createUserProfile( profile: UserProfile, image: UIImage?) async throws
+    func createUserProfile( profile: UserProfile , image:Data?) async throws
     func fetchUserProfile() async throws
-    func updateUserProfile(profile: UserProfile, image: UIImage?) async throws
+    func updateUserProfile(profile: UserProfile) async throws
     func deleteUserProfile() async throws
-    var userProfile : AnyPublisher <UserProfile , Never> {get}
+    var userProfile : AnyPublisher <UserProfile , Never>  { get }
     func removeProfileListener()
+    func fetchImage(path : String) async throws -> Data
  
 }
 

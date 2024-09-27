@@ -5,6 +5,7 @@
 //  Created by Amir Lotfi on 07.09.24.
 //
 
+
 import Foundation
 import FirebaseAuth
 import GoogleSignInSwift
@@ -12,7 +13,7 @@ import GoogleSignIn
 
 class UStore_UserAuth_ViewModel : ObservableObject{
     var repo : UStore_RepositoryImpl
-    @Published var selectedImage: UIImage? = nil
+    @Published var imageData: Data?
     @Published var authForm : AuthForme
     @Published var profile : UserProfile
     var email: String {
@@ -123,7 +124,7 @@ class UStore_UserAuth_ViewModel : ObservableObject{
             }
             var profile = profile
             profile.userId = userId
-            try await repo.createUserProfile(profile: profile, image: selectedImage)
+            try await repo.createUserProfile(profile: profile  , image: imageData)
             DispatchQueue.main.async {
                 self.authForm.isLoading = true
                 self.authForm.navigateToView = true

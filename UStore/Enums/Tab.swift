@@ -9,6 +9,7 @@
 import SwiftUI
 
 enum Tab: String, Identifiable, CaseIterable {
+    
     case home,explore, cart, favorite, account
     
     
@@ -37,11 +38,13 @@ enum Tab: String, Identifiable, CaseIterable {
     }
     
     var badgeCount: Int {
-          switch self {
-          case .cart: return 3 
-          default: return 0
-          }
-      }
+         switch self {
+         case .cart: return FFCartManager.shared.carts.count
+         case .favorite: return FFFavoriteManager.shared.favorites.count
+         default: return 0
+         }
+     }
+
 
     var view: AnyView {
         switch self {

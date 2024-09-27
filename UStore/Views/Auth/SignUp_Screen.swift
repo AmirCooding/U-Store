@@ -7,9 +7,10 @@
 
 
 import SwiftUI
+import PhotosUI
 
 struct SignUp_Screen: View {
-    @State private var selectedImage: Image?
+    @State private var selectedImage: PhotosPickerItem? = nil
     @State private var showImagePicker: Bool = false
     @StateObject private var viewModel = UStore_UserAuth_ViewModel()
     
@@ -41,34 +42,60 @@ struct SignUp_Screen: View {
                             Text("Enter your details to sign up")
                                 .foregroundColor(Colors.secondary.color())
                         }.padding(.trailing, 30)
-                 
-                            ZStack {
-                                if let selectedImage = selectedImage {
-                                    selectedImage
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 80, height: 80)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color.blue, lineWidth: 2))
-                                        .shadow(radius: 5)
-                                } else {
-                                    Circle()
-                                        .frame(width: 80, height: 80)
-                                        .foregroundColor(.gray.opacity(0.5))
-                                        .overlay(
-                                            Image(systemName: "plus")
-                                                .foregroundColor(.white)
-                                                .font(.system(size: 24, weight: .bold))
-                                        )
-                                }
-                            }.padding(.top,20)
-                            .onTapGesture {
-                                showImagePicker.toggle()
-                            }
                         
+                        VStack {
+                            PhotosPicker(selection: $selectedImage, matching: .images, photoLibrary: .shared()) {
+
+                                       if let imageData = viewModel.imageData, let uiImage = UIImage(data: imageData) {
+                                           Image(uiImage: uiImage)
+                                               .resizable()
+                                               .scaledToFill()
+                                               .clipShape(Circle()) // Circle shape
+                                               .frame(width: 100, height: 100)
+                                               .overlay(Circle()
+                                                   .stroke(Color.secondary.opacity(0.7), lineWidth: 2))
+                                               .shadow(radius: 5)
+                                       } else {
+                                           // Placeholder when no image is selected
+                                           Text("Add photo")
+                                               .frame(width: 100, height: 100)
+                                               .clipShape(Circle())
+                                               .foregroundColor(Color.secondary.opacity(0.5))
+                                               .overlay(Circle()
+                                                   .stroke(Color.secondary.opacity(0.7), lineWidth: 2))
+                                               .shadow(radius: 5)
+                                       }
+                                   }
+                                   .padding(.top, 20)
+                                   .onChange(of: selectedImage) { newItem in
+                                       guard let newItem = newItem else { return }
+                                       
+                                       // Retrieve the selected image
+                                       newItem.loadTransferable(type: Data.self) { result in
+                                           switch result {
+                                           case .success(let data):
+                                               viewModel.imageData = data // Update image data in ViewModel
+                                           case .failure(let error):
+                                               print("Failed to load image: \(error)")
+                                           }
+                                       }
+                                   }
+                               }
+                        
+                        /*
+                        PhotosPicker(selection: $selectedImage, matching: .images,photoLibrary: .shared()){
+                                Text("Add photo")
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
+                                .foregroundColor(Colors.secondary.color().opacity(0.2))
+                                .overlay(Circle()
+                                    .stroke(Colors.secondary.color().opacity(0.7), lineWidth: 2))
+                                  
+                                .shadow(radius: 5)
+                        }.padding(.top , 20)
+            */
                     }
 
-                    
                     // Full Name TextField
                     CustomTextField(text: $viewModel.profile.fullName, placeholder: "Enter your Full Name", title: "Full Name", iconAfter: "person" , showIcon: true )
                     
@@ -118,11 +145,10 @@ struct SignUp_Screen: View {
                     message: Text(viewModel.authForm.alertMessage),
                     dismissButton: .default(Text("OK"))
                 )
-            }  .sheet(isPresented: $showImagePicker, content: {
-                ImagePicker(image: $selectedImage)
-            })
+            }
         }
     }
+    
 }
 #Preview {
     SignUp_Screen()

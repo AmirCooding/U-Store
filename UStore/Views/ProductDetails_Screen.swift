@@ -17,19 +17,36 @@ struct ProductDetails_Screen: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment:.leading) {
-                    AsyncImage(url: product.artworkUrl) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 300)
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                    } placeholder: {
-                        LoadingView()
-                            .frame(height: 300)
-                            .cornerRadius(10)
-                            .frame(maxWidth: .infinity, alignment: .center)
+                    ZStack {
+                        AsyncImage(url: product.artworkUrl) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 300)
+                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        } placeholder: {
+                            LoadingView()
+                                .frame(height: 300)
+                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                        }
+
+                        Button(action: {
+                            viewModel.shareProductDetails(product: product)
+                        }) {
+                            VStack{
+                                Image(systemName: "square.and.arrow.up.circle.fill")
+                                    .foregroundColor(Colors.secondary.color().opacity(0.5))
+                                    .font(.title)
+                                Spacer()
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding()
                     }
+
+
                     
                 }
                 .padding(.vertical)

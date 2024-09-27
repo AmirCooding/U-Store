@@ -12,7 +12,6 @@ import SwiftUI
 
 struct UStore_RepositoryImpl : UStore_Repository{
 
-  
     // MARK: - Call API -
    
     func fetchAllProducts() async throws -> [Product] {try await api.fetchProducts()}
@@ -45,9 +44,8 @@ struct UStore_RepositoryImpl : UStore_Repository{
     var fevoriets: AnyPublisher<[Favorite], Never> {FFFavoriteManager.shared.$favorites.eraseToAnyPublisher()}
     
     func removeFavoriteListener() {FFFavoriteManager.shared.removeFavoriteListener()}
-    
-    
-   // var fevoriets: AnyPublisher <[Favorite] , Never> { FFFavoriteManager.shared.favorites.publisher.collect().eraseToAnyPublisher()}
+
+
     
     // MARK: -CRUD Cart -
    
@@ -66,16 +64,18 @@ struct UStore_RepositoryImpl : UStore_Repository{
     
     // MARK: -CRUD User Profile -
    
-    func createUserProfile(profile: UserProfile, image: UIImage?) async throws {try await FFUserProfileManager.shared.createUserProfile(profile: profile, image: image)}
-    func updateUserProfile(profile: UserProfile, image: UIImage?) async throws {try await  FFUserProfileManager.shared.updateUserProfile( profile : profile, image: image)}
+    func createUserProfile(profile: UserProfile, image: Data?) async throws {
+      try await FFUserProfileManager.shared.createUserProfile(profile: profile , image:  image)}
+    func updateUserProfile(profile: UserProfile ) async throws {try await  FFUserProfileManager.shared.updateUserProfile( profile : profile)}
     
-    func fetchUserProfile() async throws {try await FFUserProfileManager.shared.fetchUserProfile()}
+    func fetchUserProfile() async throws {try await  FFUserProfileManager.shared.fetchUserProfile()}
     
     func deleteUserProfile() async throws {try   await FFUserProfileManager.shared.deleteUserProfile()}
     
-    var userProfile: AnyPublisher<UserProfile, Never> {FFUserProfileManager.shared.userProfile.publisher.eraseToAnyPublisher()}
-    
+    var userProfile: AnyPublisher<UserProfile, Never> {FFUserProfileManager.shared.$userProfile.eraseToAnyPublisher()}
+
     func removeProfileListener() {FFUserProfileManager.shared.removeProfileListener()}
+    func fetchImage(path : String) async throws -> Data { try await StorageManager.shared.fetchImage(imagePath: path)}
     
     // MARK: - Supply Categroies -
   

@@ -17,8 +17,9 @@ struct Navigatoreator_Screen: View {
                         Label(tab.title, systemImage: tab.icon)
                     }
                     .tag(tab)
+                    .badge(tab.badgeCount > 0 ? tab.badgeCount : 0)
             }
-       }
+        }
         .accentColor(Colors.primary.color())
     }
 }

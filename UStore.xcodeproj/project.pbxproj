@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		296352102CA3F7120038E8EB /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963520F2CA3F7120038E8EB /* StorageManager.swift */; };
+		296352122CA589460038E8EB /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296352112CA589460038E8EB /* PaymentMethod.swift */; };
 		2963B3462C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963B3452C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift */; };
 		2963B3492C9B176100CEE92B /* Orders_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963B3482C9B176100CEE92B /* Orders_Screen.swift */; };
 		2963B34B2C9B177C00CEE92B /* MyDetails_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963B34A2C9B177C00CEE92B /* MyDetails_Screen.swift */; };
@@ -40,6 +42,7 @@
 		296C96142C8B2DEA00B39A10 /* SignUp_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96132C8B2DEA00B39A10 /* SignUp_Screen.swift */; };
 		296C96162C8B2E0400B39A10 /* ForgetPassword_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96152C8B2E0400B39A10 /* ForgetPassword_Screen.swift */; };
 		296C96182C8B2F2F00B39A10 /* Home_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296C96172C8B2F2F00B39A10 /* Home_Screen.swift */; };
+		29A902CF2CA1530600E2C035 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A902CE2CA1530600E2C035 /* Order.swift */; };
 		29BEC5042C8DA4830071960E /* AuthForme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BEC5032C8DA4830071960E /* AuthForme.swift */; };
 		29BEC5062C8DCBF10071960E /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BEC5052C8DCBF10071960E /* AuthError.swift */; };
 		29BEC50D2C8E11050071960E /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 29BEC50C2C8E11050071960E /* GoogleSignIn */; };
@@ -125,6 +128,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2963520F2CA3F7120038E8EB /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		296352112CA589460038E8EB /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		2963B3452C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsScreen_ViewModel.swift; sourceTree = "<group>"; };
 		2963B3482C9B176100CEE92B /* Orders_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orders_Screen.swift; sourceTree = "<group>"; };
 		2963B34A2C9B177C00CEE92B /* MyDetails_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDetails_Screen.swift; sourceTree = "<group>"; };
@@ -161,6 +166,7 @@
 		296C96132C8B2DEA00B39A10 /* SignUp_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp_Screen.swift; sourceTree = "<group>"; };
 		296C96152C8B2E0400B39A10 /* ForgetPassword_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPassword_Screen.swift; sourceTree = "<group>"; };
 		296C96172C8B2F2F00B39A10 /* Home_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home_Screen.swift; sourceTree = "<group>"; };
+		29A902CE2CA1530600E2C035 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		29BEC5032C8DA4830071960E /* AuthForme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthForme.swift; sourceTree = "<group>"; };
 		29BEC5052C8DCBF10071960E /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		29BEC5102C8E11DD0071960E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -418,6 +424,7 @@
 		296C96072C8B282000B39A10 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				296352112CA589460038E8EB /* PaymentMethod.swift */,
 				29BEC5032C8DA4830071960E /* AuthForme.swift */,
 				29BEC51E2C8F4AC30071960E /* Product.swift */,
 				29BEC5202C8F4AF00071960E /* Rating.swift */,
@@ -427,6 +434,7 @@
 				29BEC5402C9048660071960E /* UserProfile.swift */,
 				29BEC5422C9048870071960E /* UserAddress.swift */,
 				29BEC5442C904CC80071960E /* AppUser.swift */,
+				29A902CE2CA1530600E2C035 /* Order.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -525,6 +533,7 @@
 		29BEC52B2C901CB50071960E /* FirebaseStorage */ = {
 			isa = PBXGroup;
 			children = (
+				2963520F2CA3F7120038E8EB /* StorageManager.swift */,
 			);
 			path = FirebaseStorage;
 			sourceTree = "<group>";
@@ -748,6 +757,7 @@
 				29DD1C7E2C8B4AE60001ACC8 /* Colors.swift in Sources */,
 				29DD1CB02C8C6FD50001ACC8 /* FAuthManager.swift in Sources */,
 				29DD1C692C8B33480001ACC8 /* Cart_Screen.swift in Sources */,
+				29A902CF2CA1530600E2C035 /* Order.swift in Sources */,
 				29DD1CB52C8C71110001ACC8 /* UStore_Repositroy.swift in Sources */,
 				296C96122C8B2B4600B39A10 /* SignIn_Screen.swift in Sources */,
 				2963B34B2C9B177C00CEE92B /* MyDetails_Screen.swift in Sources */,
@@ -786,6 +796,7 @@
 				29BEC51F2C8F4AC30071960E /* Product.swift in Sources */,
 				29BEC52D2C90208D0071960E /* ProductCard.swift in Sources */,
 				2965D7F92C91BE8B006C72D6 /* FavoriteCart_Screen.swift in Sources */,
+				296352102CA3F7120038E8EB /* StorageManager.swift in Sources */,
 				2963B35D2C9C234700CEE92B /* FFProfileManager.swift in Sources */,
 				29BEC53B2C903D390071960E /* Cart_ViewModel.swift in Sources */,
 				29BEC5162C8E18D40071960E /* Utilities.swift in Sources */,
@@ -799,6 +810,7 @@
 				29BEC5232C8F4B410071960E /* ProductCategory.swift in Sources */,
 				2963B3572C9B188100CEE92B /* Help_Screen.swift in Sources */,
 				2965D7FE2C931BE6006C72D6 /* ProductsCard_ViewModel.swift in Sources */,
+				296352122CA589460038E8EB /* PaymentMethod.swift in Sources */,
 				29BEC5372C903A040071960E /* Favorite_ViewModel.swift in Sources */,
 				29DD1CBA2C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift in Sources */,
 				2965D7FC2C92AF3C006C72D6 /* LoggerManager.swift in Sources */,

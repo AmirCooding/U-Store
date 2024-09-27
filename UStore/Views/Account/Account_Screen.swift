@@ -8,43 +8,44 @@
 
 import SwiftUI
 import FirebaseAuth
+
 struct Account_Screen: View {
     @StateObject private var viewModel = Account_ViewModel()
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                
-                HStack {
-                    ZStack{
-                        Image("")
+                HStack(alignment:.center) {
+                    if let imageData = viewModel.imageData,
+                       let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
                             .resizable()
                             .frame(width: 80, height: 80)
                             .clipShape(Circle())
-                            .background(.gray)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                        Image(systemName: "person.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(Colors.white.color())
-                        
-                        
-                    }
-                   
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(Auth.auth().currentUser?.uid ?? "No Current user")
-                                .font(GilroyFonts.font(style: .bold, size: 24))
                            
+                    } else {
+                        ZStack {
+                            Circle()
+                                .fill(Color.gray)
+                                .frame(width: 80, height: 80)
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.white)
                         }
-                        Text(Auth.auth().currentUser?.email ?? "No Current user")
-                            .font(GilroyFonts.font(style: .regular, size: 18))
-                            .foregroundColor(Colors.faceBook.color())
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(viewModel.profile.fullName.isEmpty ? "NO Name for user" : viewModel.profile.fullName)
+                            .font(GilroyFonts.font(style: .bold, size: 24))
+                            .foregroundColor(.primary)
                         
+                        Text(viewModel.profile.email.isEmpty ? "NO email for user" : viewModel.profile.email)
+                            .font(GilroyFonts.font(style: .bold, size: 14))
+                            .foregroundColor(viewModel.profile.email.isEmpty ? Colors.faceBook.color() : .blue)
                     }
                     .padding(.leading, 10)
-                    
-                    Spacer()
                 }
                 .padding()
                 
@@ -58,14 +59,14 @@ struct Account_Screen: View {
                                 Text("Orders")
                             }
                         }
-                        NavigationLink(destination: MyDetails_Screen()) {
+                        NavigationLink(destination: MyDetails_Screen().environmentObject(viewModel)) {
                             HStack {
                                 Image(systemName: "person.crop.rectangle")
                                     .foregroundColor(.primary)
                                 Text("My Details")
                             }
                         }
-                        NavigationLink(destination: DeliveryAddress_Screen()) {
+                        NavigationLink(destination: DeliveryAddress_Screen().environmentObject(viewModel)) {
                             HStack {
                                 Image(systemName: "location")
                                     .foregroundColor(.primary)
@@ -115,34 +116,36 @@ struct Account_Screen: View {
                 .listStyle(InsetGroupedListStyle())
                 
                 Spacer()
+                
                 CustomButton(
                     text: "Logout",
                     textColor: Colors.white.color(),
                     iconColor: Colors.white.color(),
                     backgroundColor: Colors.error.color(),
                     action: {
-                        Task{
-                             try viewModel.handelSignOut()
+                        Task {
+                            try viewModel.handelSignOut()
                         }
-                    } ,
+                    },
                     image: Image(systemName: "rectangle.portrait.and.arrow.right")
-                ).padding()
+                )
+                .padding()
                 .navigationDestination(isPresented: $viewModel.authForm.navigateToView) {
                     SignIn_Screen()
                         .navigationBarBackButtonHidden(true)
                 }
-        
-                    }
-                    .navigationTitle("Account")
+                
             }
+            .onAppear {
+                Task {
+                    try await viewModel.fetchUserProfile()
+                }
+            }
+            .navigationTitle("Account")
         }
     }
-
+}
 
 #Preview {
     Account_Screen()
 }
-
-/*
-
- */
