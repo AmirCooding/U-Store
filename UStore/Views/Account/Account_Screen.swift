@@ -7,15 +7,14 @@
 
 
 import SwiftUI
-import FirebaseAuth
+
 
 struct Account_Screen: View {
     @StateObject private var viewModel = Account_ViewModel()
-    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                HStack(alignment:.center) {
+                HStack(alignment: .center) {
                     if let imageData = viewModel.imageData,
                        let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
@@ -46,6 +45,10 @@ struct Account_Screen: View {
                             .foregroundColor(viewModel.profile.email.isEmpty ? Colors.faceBook.color() : .blue)
                     }
                     .padding(.leading, 10)
+                }   .onAppear {
+                    Task {
+                        try await viewModel.fetchUserProfile()
+                    }
                 }
                 .padding()
                 
@@ -73,7 +76,7 @@ struct Account_Screen: View {
                                 Text("Delivery Address")
                             }
                         }
-                        NavigationLink(destination: PaymentMethods_Screen()) {
+                        NavigationLink(destination: PaymentMethods_Screen().environmentObject(viewModel)) {
                             HStack {
                                 Image(systemName: "creditcard")
                                     .foregroundColor(.primary)
@@ -136,11 +139,7 @@ struct Account_Screen: View {
                 }
                 
             }
-            .onAppear {
-                Task {
-                    try await viewModel.fetchUserProfile()
-                }
-            }
+         
             .navigationTitle("Account")
         }
     }

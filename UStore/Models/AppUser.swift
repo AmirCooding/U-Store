@@ -9,13 +9,12 @@ import Foundation
 import FirebaseFirestore
 
 struct AppUser : Codable{
-    
-    internal init(id: String, email: String) {
-        self.id = id
+    internal init(userId: String, email: String) {
+        self.userId = userId
         self.email = email
     }
     
-    let id: String
+    let userId: String
     let email: String
     
 }

@@ -31,7 +31,7 @@ struct CreditCard : Codable {
 
 
 struct Sepa : Codable {
-    var payPalisClicked : Bool = false
+    var sepaClicked : Bool = false
     var iban : String  = ""
 }
 

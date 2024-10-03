@@ -20,6 +20,8 @@ class StorageManager{
         }
         return userId
     }
+//MARK: - Save image  Profile in Firbase Storage -
+   
     func saveImage(data : Data) async throws ->  String {
         let  meta = StorageMetadata()
         meta.contentType = "image/jpeg"
@@ -33,6 +35,8 @@ class StorageManager{
         return returnedPath
     }
     
+    //MARK: - fetch image  Profile from Firbase Storage -
+  
     func fetchImage(imagePath: String) async throws -> Data {
         return try await withCheckedThrowingContinuation { continuation in
             let storage = Storage.storage().reference(withPath: imagePath)
@@ -51,3 +55,4 @@ class StorageManager{
 
     
 }
+

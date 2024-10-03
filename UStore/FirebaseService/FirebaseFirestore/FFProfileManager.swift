@@ -13,7 +13,7 @@ import Combine
 
 class FFUserProfileManager {
     static let shared = FFUserProfileManager()
-    @Published var userProfile:  UserProfile  = UserProfile()
+    @Published var userProfile: UserProfile
     private let dbCollection = Firestore.firestore().collection("profile")
     private let storage = Storage.storage()
     private let subject = PassthroughSubject<UserProfile, Never>()
@@ -21,7 +21,9 @@ class FFUserProfileManager {
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Initialization -
+   
     private init() {
+        userProfile = UserProfile()
         guard let userId =  Auth.auth().currentUser?.uid else {
             print("No valid user ID")
             return
@@ -53,6 +55,7 @@ class FFUserProfileManager {
     
     
     // MARK: - Create new user profile -
+   
     func createUserProfile(profile: UserProfile  , image : Data?) async throws {
         guard let userId = Auth.auth().currentUser?.uid else {print("Invalid User ID or Email")
             return }
@@ -70,16 +73,16 @@ class FFUserProfileManager {
      
     }
 
-    
-    //MARK: - Upload Image to Firebase Storage and get URL -
    
     // MARK: - fetch  user profile -
-    func fetchUserProfile() async throws {
+   
+    func fetchUserProfile() async throws -> UserProfile {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("No valid user ID to create favorite")
-            return
+            throw AuthError.invalidUser
         }
         let document = try await dbCollection.document(userId).getDocument()
+        
         if let userProfile = try? document.data(as: UserProfile.self) {
             DispatchQueue.main.async {
                 self.userProfile = userProfile
@@ -88,6 +91,7 @@ class FFUserProfileManager {
         } else {
             print("Failed to decode user profile")
         }
+        return userProfile
     }
   
     
@@ -106,6 +110,7 @@ class FFUserProfileManager {
     
    
     // MARK: - delete  user profile -
+    
     func deleteUserProfile() async throws {
         let userId =  Auth.auth().currentUser?.uid
         let docRef = dbCollection.document( userId ?? "NO User ID")
@@ -115,9 +120,9 @@ class FFUserProfileManager {
     }
     
     
-    // MARK: - Remove Listener
+    // MARK: - Remove Listener -
     func removeProfileListener() {
-        userProfile = UserProfile()
+       userProfile = UserProfile()
         listener?.remove()
         listener = nil
     }

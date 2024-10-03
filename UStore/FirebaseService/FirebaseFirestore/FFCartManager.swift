@@ -11,20 +11,22 @@ import FirebaseFirestore
 import FirebaseAuth
 import Combine
 
-
-
 class FFCartManager  {
     static let shared  = FFCartManager()
-    @Published var carts: [CartItem] = []
+    @Published var carts: [CartItem]  = []
     private let dbCollection = Firestore.firestore().collection("carts")
     private let subject = PassthroughSubject<[CartItem], Never>()
     private var listener: ListenerRegistration?
     private var cancellables = Set<AnyCancellable>()
-    //  private let userId = FFUserManager.shared.auth.currentUser?.uid
+    
     
     // MARK: - Initialization -
     
     private init() {
+        Task{
+            try  addListenerForAllUserCartProducts()
+        }
+   /*
         // Set up a snapshot listener to automatically update the carts list
         listener = dbCollection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -45,15 +47,45 @@ class FFCartManager  {
         subject.sink { carts in
             self.carts = carts
         }.store(in: &cancellables)
+    */
     }
     
-    func addListenerForAllUserCartProducts() async throws{
-        dbCollection.addSnapshotListener{querySnapshot , error in
+    // Listener für alle Cart-Produkte des aktuellen Benutzers
+    func addListenerForAllUserCartProducts() throws {
+        // Sicherstellen, dass die Benutzer-ID vorhanden ist
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("No valid user ID to listen for cart products")
+            throw AuthError.invalidUser
         }
+
+        // Listener hinzufügen, der auf alle Änderungen für den Benutzer lauscht
+        listener = dbCollection
+            .whereField("userId", isEqualTo: userId)
+            .addSnapshotListener { querySnapshot, error in
+                // Fehlerbehandlung
+                if let error = error {
+                    print("Error listening for cart products: \(error)")
+                    return
+                }
+                
+                // Extrahiere die Cart-Items aus dem Snapshot
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents in cart snapshot")
+                    return
+                }
+                
+                // Versuche, die Dokumente in CartItem-Objekte zu dekodieren
+                let updatedCarts = documents.compactMap { document in
+                    try? document.data(as: CartItem.self)
+                }
+                
+                // Aktualisiere die Liste der Carts und sende sie über Combine
+                self.carts = updatedCarts
+                self.subject.send(updatedCarts)
+            }
     }
-    
-    
-    // MARK: - Create Favorite -
+
+    // MARK: - Create Cart -
     
     func createCart(product : Product) throws {
         guard let userId =  Auth.auth().currentUser?.uid else {
@@ -70,7 +102,7 @@ class FFCartManager  {
         }
     }
     
-    // MARK: - Update Cart Quantity -
+    // MARK: - Update Cart Productsquantity  -
     
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws {
         guard let userId =  Auth.auth().currentUser?.uid else {
@@ -96,7 +128,7 @@ class FFCartManager  {
     
     
     
-    // MARK: - Delete Favorite -
+    // MARK: - Delete Cart -
     
     func deleteCart(cart: CartItem) async throws {
         guard let id = cart.id else {
@@ -106,21 +138,22 @@ class FFCartManager  {
         try await dbCollection.document(id).delete()
     }
     
-    // MARK: - Fetch All Favorites (one-time fetch) -
+    // MARK: - Fetch All Carts (one-time fetch) -
     
-    func fetchAllProductdFromCart() async throws -> [CartItem] {
-        let userId =  Auth.auth().currentUser?.uid
-        let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()
+    func fetchAllProductsFromCart() async throws {
+        guard let userId =  Auth.auth().currentUser?.uid else {
+            print("No valid user ID to update cart")
+             throw AuthError.invalidUser
+        }
+        LoggerManager.logInfo(" user id fetch Cart -----------------> : \(userId)")
+        let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ).getDocuments()
         let fetchCarts = snapshot.documents.compactMap { document in
             try? document.data(as: CartItem.self)
         }
-        print("Fetched \(carts.count) favorites")
-        DispatchQueue.main.async {
-            self.carts = fetchCarts
-        }
-        return carts
+        self.carts = fetchCarts
     }
-    // MARK: - Remove Listener -
+    
+    // MARK: - Remove Cart Listener -
     func removeCartListener() {
         carts = []
         listener?.remove()
@@ -128,5 +161,4 @@ class FFCartManager  {
     }
     
 }
-
 

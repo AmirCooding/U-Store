@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseFirestore
 import Firebase
 import FirebaseAuth
 
@@ -16,9 +15,9 @@ class FFUserManager {
     static let shared = FFUserManager()
     var auth = Auth.auth()
 
-    // Mark : Create User in Firebase Firestore
+    // MARK:  -Create User in Firebase Firestore-
     func createUser(id: String, email: String) {
-        let user = AppUser(id: id, email: email)
+        let user = AppUser(userId: id, email: email)
         do {
             try dbCollection.document(id).setData(from: user)
             print("User created successfully!")
@@ -28,7 +27,7 @@ class FFUserManager {
     }
     
     
-    // Mark : Fetch User in Firebase Firestore
+    // MARK: -Fetch User in Firebase Firestore -
     func fetchUser(id: String) {
         dbCollection.document(id).getDocument { document, error in
             if let error {

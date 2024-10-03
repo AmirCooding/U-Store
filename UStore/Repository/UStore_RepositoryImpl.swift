@@ -51,7 +51,7 @@ struct UStore_RepositoryImpl : UStore_Repository{
    
     func createCart(product: Product ) throws {   try FFCartManager.shared.createCart(product: product)}
     
-    func fetchAllProductsFromCart() async throws ->[CartItem] {try await FFCartManager.shared.fetchAllProductdFromCart()}
+    func fetchAllProductsFromCart() async throws {try await FFCartManager.shared.fetchAllProductsFromCart()}
     
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws {try await FFCartManager.shared.updateCartQuantity(productId: productId, newQuantity: newQuantity)}
     

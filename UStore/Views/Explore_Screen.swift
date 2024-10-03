@@ -7,7 +7,7 @@
 import Foundation
 import SwiftUI
 struct Explore_Screen: View {
-    @State private var searchQuery: String = "" 
+    @State private var searchQuery: String = ""
     private var viewModel = Explore_ViewModel()
     private let gridItems = [
         GridItem(.flexible(), spacing: 6),

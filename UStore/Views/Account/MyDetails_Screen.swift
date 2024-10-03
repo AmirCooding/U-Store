@@ -10,7 +10,7 @@ import SwiftUI
 import PhotosUI
 
 struct MyDetails_Screen: View {
-    @EnvironmentObject var viewModel  : Account_ViewModel
+    @EnvironmentObject var viewModel : Account_ViewModel
     @State private var selectedImage: PhotosPickerItem? = nil
     @State private var isEditing: Bool = false
     @State private var showImagePicker = false
@@ -114,8 +114,8 @@ struct MyDetails_Screen: View {
                         Task {
                             do {
                                 try await viewModel.updateUserProfile(profile: viewModel.profile)
+                                try await viewModel.updateProfileAndFetchData()
                             } catch {
-                            
                                 print("Error updating profile: \(error.localizedDescription)")
                             }
                         }

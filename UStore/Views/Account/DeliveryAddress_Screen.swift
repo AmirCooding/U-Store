@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftUI
 
 struct DeliveryAddress_Screen: View {
-    @EnvironmentObject var viewModel : Account_ViewModel
+@EnvironmentObject  var viewModel : Account_ViewModel
     @State private var isEditing: Bool = false
 
     var body: some View {
@@ -95,11 +95,12 @@ struct DeliveryAddress_Screen: View {
                         Task {
                             do {
                                 try await viewModel.updateUserProfile(profile: viewModel.profile)
+                                try await viewModel.updateProfileAndFetchData()
                             } catch {
-                            
                                 print("Error updating profile: \(error.localizedDescription)")
                             }
                         }
+
                     }) {
                         Text("Save Address")
                             .foregroundColor(.blue)

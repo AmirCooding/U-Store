@@ -10,7 +10,7 @@ import Foundation
 import FirebaseFirestore
 
 struct UserProfile: Codable, Identifiable {
-    internal init(id: String? = nil, userId: String = "", fullName: String = "", email: String = "", tel: String = "", imagePath: String? = nil, userAddress: UserAddress = UserAddress(street: "", number: "" , state: "" , zipCode: "" , country: ""), paymentMethode: PaymentMethod = PaymentMethod(payPal: PayPal(payPalisClicked: false , email:  ""), creditCard: CreditCard(creditCartIssClicked: false, cvv: ""), sepa: Sepa(payPalisClicked: false , iban: " "))) {
+    internal init(id: String? = nil, userId: String = "", fullName: String = "", email: String = "", tel: String = "", imagePath: String? = nil, userAddress: UserAddress = UserAddress(street: "", number: "" , state: "" , zipCode: "" , country: ""), paymentMethode: PaymentMethod = PaymentMethod(payPal: PayPal(payPalisClicked: false , email:  ""), creditCard: CreditCard(creditCartIssClicked: false, cvv: ""), sepa: Sepa(sepaClicked: false , iban: " "))) {
         self.id = id
         self.userId = userId
         self.fullName = fullName
@@ -30,7 +30,7 @@ struct UserProfile: Codable, Identifiable {
     var tel: String = ""
     var imagePath: String?
     var userAddress: UserAddress = UserAddress(street: "", number: "" , state: "" , zipCode: "" , country: "")
-    var paymentMethode : PaymentMethod = PaymentMethod(payPal: PayPal(payPalisClicked: false , email:  ""), creditCard: CreditCard(creditCartIssClicked: false, cvv: ""), sepa: Sepa(payPalisClicked: false , iban: " "))
+    var paymentMethode : PaymentMethod = PaymentMethod(payPal: PayPal(payPalisClicked: false , email:  ""), creditCard: CreditCard(creditCartIssClicked: false, cvv: ""), sepa: Sepa(sepaClicked: false , iban: " "))
 }
 
 

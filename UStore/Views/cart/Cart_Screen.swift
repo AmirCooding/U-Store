@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Cart_Screen: View {
     @StateObject private var viewModel   = Cart_ViewModel()
+    @State private var navigateToCheckout = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -39,10 +40,21 @@ struct Cart_Screen: View {
                                 .foregroundColor(Colors.primary.color())
                         }.padding(.horizontal,30)
                         Spacer()
-                        HStack{
-                            CustomButton(text: "Checkout", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {})
-                        }.frame( width: 120 , height: 60)
-                            .padding()
+                        HStack {
+                            NavigationLink(destination: CheckOut_Screen(), isActive: $navigateToCheckout) {
+                                     CustomButton(
+                                         text: "Checkout",
+                                         textColor: Colors.white.color(),
+                                         backgroundColor: Colors.primary.color(),
+                                         action: {
+                                             navigateToCheckout = true
+                                         }
+                                     )
+                                 }
+                             }
+                             .frame(width: 120, height: 60)
+                             .padding()
+                         
                     }
                     .background(Colors.secondary.color().opacity(0.07))
                     .padding(.bottom, 2)
@@ -54,6 +66,10 @@ struct Cart_Screen: View {
                     }
                 }
             
+            }
+        }.onAppear{
+            Task{
+               try await viewModel.fetchAllproductsCart()
             }
         }
         

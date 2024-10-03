@@ -37,7 +37,7 @@ protocol UStore_Repository {
     func createCart(product: Product) throws
     //func createCart(productId: Int) throws
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws
-    func fetchAllProductsFromCart() async throws ->[CartItem] 
+    func fetchAllProductsFromCart() async throws 
     func deleteCart(cart: CartItem) async throws
     var carts : AnyPublisher<[CartItem], Never>  { get }
     func removeCartListener()

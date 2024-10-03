@@ -123,7 +123,7 @@ import Combine
         case 5:
             return (5, Double.greatestFiniteMagnitude)
         default:
-            return nil 
+            return nil
         }
     }
 

@@ -91,7 +91,8 @@ struct Home_Screen: View {
                 .padding(.bottom, 10)
                 
             }
-            
+
+        
         }
         
     }

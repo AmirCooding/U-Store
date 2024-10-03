@@ -17,7 +17,7 @@ class DetailsScreen_ViewModel: ObservableObject {
     @Published var isLiked: Bool = false
     @Published var favorites: [Favorite] = []
     @Published var carts   : [CartItem] = []
-    private var subscriptions = Set<AnyCancellable>() 
+    private var subscriptions = Set<AnyCancellable>()
     var scriptions = Set<AnyCancellable>()
     init() {
         repos = UStore_RepositoryImpl()

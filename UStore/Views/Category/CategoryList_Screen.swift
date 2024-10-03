@@ -12,7 +12,7 @@ struct CategoryList_Screen: View {
     @State private var searchText = ""
     @State private var showSheet = false
     @State private var isLoading = true
-    @State private var filteredProducts: [Product] = []  
+    @State private var filteredProducts: [Product] = []
 
     private let gridItems = [
         GridItem(.flexible(), spacing: 6),

@@ -34,22 +34,38 @@ class Cart_ViewModel : ObservableObject{
      
         repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
     }
-    // MARK: - fetch all Product from Firestore and sent to screen
+    // MARK: - fetch all Product from Firestore and sent to screen -
     func fetchAllproductsCart() async throws {
-        self.isLoading = true
-        LoggerManager.logInfo("Count the cvart  in viewModel   fetch All carts: ---------------- > \(carts.count)")
         cartProducts.removeAll()
-        for cart in carts {
-            let product = try await repos.fetchProductById(productId: cart.ProductId)
-            self.isLoading = true
-            calculateQuantityPerproduct()
-            cartProducts.append(product)
-            self.isLoading = false
+        self.isLoading = true
+        do {
+            for cart in carts {
+                let product = try await repos.fetchProductById(productId: cart.ProductId)
+                DispatchQueue.main.async {
+                    self.cartProducts.append(product)
+                    self.calculateQuantityPerproduct()
+                }
+            }
+        } catch {
+            LoggerManager.logInfo("Failed to fetch products: \(error)")
+            throw error
         }
-        LoggerManager.logInfo("Count the cartProducts  in viewModel   fetch All Products from Cart: ---------------- > \(cartProducts.count)")
-        self.isLoading = false
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        LoggerManager.logInfo("Count the cartProducts in viewModel fetch All Products from Cart: ---------------- > \(cartProducts.count)")
     }
-    // MARK: - add Product to Cart
+
+    // MARK: - add Product to Cart -
+    func calculateQuantityAllProducts() -> Int {
+        var quantities = 0
+        for cart in carts{
+            quantities += cart.quantity
+        }
+    return quantities
+    }
+    
+    // MARK: - add Product to Cart -
     func addToCart(productId: Int) async throws {
         if let selectedProduct = carts.first(where: { $0.ProductId == productId }) {
             let newQuantity = selectedProduct.quantity + 1
@@ -65,7 +81,7 @@ class Cart_ViewModel : ObservableObject{
         try await repos.updateCartQuantity(productId: productId, newQuantity: newQuantity)
     }
 
-    // MARK: - calculate Quantity Per Product
+    // MARK: - calculate Quantity Per Product -
     func calculateQuantityPerproduct() {
         productQuantities.removeAll()
         for cart in carts {
@@ -77,7 +93,7 @@ class Cart_ViewModel : ObservableObject{
         }
     }
     
-    // MARK: - calculate Total Sub Price
+    // MARK: - calculate Total Sub Price -
     func calculateSubPrice(for productId: Int) {
         if let cart = carts.first(where: { $0.ProductId == productId }) {
             let totalSubPrice = cart.productPrice * Double( cart.quantity)
@@ -85,7 +101,7 @@ class Cart_ViewModel : ObservableObject{
         }
     }
     
-    // MARK: - calculate Total Cost Price
+    // MARK: - calculate Total Cost Price -
     func calculateTotalCost(){
         var totalCost: Double = 0.0
         for cartItem in carts {
@@ -96,11 +112,11 @@ class Cart_ViewModel : ObservableObject{
         self.totalCost = String(format: "%.2f €", totalCost)
     }
 
-    // MARK: - Fetch product details for a given productId
+    // MARK: - Fetch product details for a given productId -
     func fetchProductById(productId: Int) async throws -> Product {
         return try await repos.fetchProductById(productId: productId)
     }
-    // MARK: - Delete a cart from favorites
+    // MARK: - Delete a cart from favorites -
     func deleteCart(cart: CartItem) async throws {
         guard let currentQuantity = productQuantities[cart.ProductId], currentQuantity > 0 else {
             return

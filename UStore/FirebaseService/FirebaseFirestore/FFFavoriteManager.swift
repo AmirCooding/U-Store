@@ -6,17 +6,12 @@
 //
 
 
-import Foundation
-import FirebaseFirestore
-import FirebaseAuth
-import Combine
-
-
 
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 import Combine
+
 
 
 class FFFavoriteManager  : ObservableObject{
@@ -28,7 +23,8 @@ class FFFavoriteManager  : ObservableObject{
     private var cancellables = Set<AnyCancellable>()
 
     
-    // MARK: - Initialization
+    // MARK: - Initialization -
+   
     private init() {
         // Set up a snapshot listener to automatically update the carts list
         listener = dbCollection.addSnapshotListener { snapshot, error in
@@ -42,14 +38,10 @@ class FFFavoriteManager  : ObservableObject{
             } ?? []
             
             print("Fetched \(updatedFavorites.count) favorites from snapshot listener")
-            
 
             // Send the updated favorites through the Combine subject
             self.subject.send(updatedFavorites)
         }
-        
-        
-        // Subscribe to subject and update the local favorites array when changes occur
         subject.sink { favorites in
             self.favorites = favorites
         }.store(in: &cancellables)
@@ -60,7 +52,8 @@ class FFFavoriteManager  : ObservableObject{
         }
     }
     
-    // MARK: - Create Favorite
+    // MARK: - Create Favorite -
+    
     func createFavorite(productId: Int) throws {
         guard let userId =  Auth.auth().currentUser?.uid else {
             print("No valid user ID to create favorite")
@@ -80,7 +73,8 @@ class FFFavoriteManager  : ObservableObject{
     
     
    
-    // MARK: - Delete Favorite
+    // MARK: - Delete Favorite -
+   
     func deleteFavorite(favorite: Favorite) async throws {
         guard let id = favorite.id else {
             LoggerManager.logInfo("Failed to delete favorite: no document ID")
@@ -90,14 +84,18 @@ class FFFavoriteManager  : ObservableObject{
     }
     
     
-    // MARK: - Fetch All Favorites (one-time fetch)
+    // MARK: - Fetch All Favorites (one-time fetch) -
+   
     func fetchAllFavorites() async throws -> [Favorite] {
-        let userId =  Auth.auth().currentUser?.uid
-        let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId ?? "No ID").getDocuments()
+        guard let userId =  Auth.auth().currentUser?.uid else {
+            print("No valid user ID to create favorite")
+            throw AuthError.invalidUser
+        }
+        let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId).getDocuments()
         let fetchedFavorites = snapshot.documents.compactMap { document in
             try? document.data(as: Favorite.self)
         }
-        LoggerManager.logInfo("Fetched \(fetchedFavorites.count) favorites in FFFavoriteManager for USer ID \(String(describing: userId))")
+        LoggerManager.logInfo("Fetched \(fetchedFavorites.count) favorites in FFFavoriteManager for USer ID \(userId)")
         DispatchQueue.main.async {
             self.favorites = fetchedFavorites
         }
@@ -105,13 +103,12 @@ class FFFavoriteManager  : ObservableObject{
         return fetchedFavorites
     }
 
-    // MARK: - Remove Listener
-   func removeFavoriteListener() {
+    // MARK: - Remove Listener -
+  
+    func removeFavoriteListener() {
       favorites = []
       listener?.remove()
       listener = nil
     }
     
 }
-
-   
