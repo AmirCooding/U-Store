@@ -10,6 +10,7 @@
 		2911493C2CAEDDCD00C3A3D7 /* CheckOut_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2911493B2CAEDDCD00C3A3D7 /* CheckOut_ViewModel.swift */; };
 		2911493F2CAEDEE700C3A3D7 /* CheckOut_Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2911493E2CAEDEE700C3A3D7 /* CheckOut_Screen.swift */; };
 		291149412CAEDF0400C3A3D7 /* CheckOutCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291149402CAEDF0400C3A3D7 /* CheckOutCard.swift */; };
+		291149432CB3D6D400C3A3D7 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291149422CB3D6D400C3A3D7 /* ConfirmationView.swift */; };
 		296352102CA3F7120038E8EB /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963520F2CA3F7120038E8EB /* StorageManager.swift */; };
 		296352122CA589460038E8EB /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296352112CA589460038E8EB /* PaymentMethod.swift */; };
 		2963B3462C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2963B3452C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift */; };
@@ -132,6 +133,7 @@
 		2911493B2CAEDDCD00C3A3D7 /* CheckOut_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOut_ViewModel.swift; sourceTree = "<group>"; };
 		2911493E2CAEDEE700C3A3D7 /* CheckOut_Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOut_Screen.swift; sourceTree = "<group>"; };
 		291149402CAEDF0400C3A3D7 /* CheckOutCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOutCard.swift; sourceTree = "<group>"; };
+		291149422CB3D6D400C3A3D7 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		2963520F2CA3F7120038E8EB /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		296352112CA589460038E8EB /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		2963B3452C9ADC2400CEE92B /* DetailsScreen_ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsScreen_ViewModel.swift; sourceTree = "<group>"; };
@@ -283,8 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				29DD1C6A2C8B33680001ACC8 /* Account_Screen.swift */,
-				2963B3482C9B176100CEE92B /* Orders_Screen.swift */,
 				2963B34A2C9B177C00CEE92B /* MyDetails_Screen.swift */,
+				2963B3482C9B176100CEE92B /* Orders_Screen.swift */,
 				2963B34E2C9B17A600CEE92B /* PaymentMethods_Screen.swift */,
 				2963B3502C9B183700CEE92B /* DeliveryAddress_Screen.swift */,
 				2963B3522C9B185800CEE92B /* PromoCard_Screen.swift */,
@@ -462,6 +464,7 @@
 				29BEC5302C9023170071960E /* CustomSearchTextField.swift */,
 				29BEC5342C9025620071960E /* NoContentOverlay.swift */,
 				2965D7F32C91A012006C72D6 /* ProductRatingView.swift */,
+				291149422CB3D6D400C3A3D7 /* ConfirmationView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -823,6 +826,7 @@
 				2963B3572C9B188100CEE92B /* Help_Screen.swift in Sources */,
 				2965D7FE2C931BE6006C72D6 /* ProductsCard_ViewModel.swift in Sources */,
 				296352122CA589460038E8EB /* PaymentMethod.swift in Sources */,
+				291149432CB3D6D400C3A3D7 /* ConfirmationView.swift in Sources */,
 				29BEC5372C903A040071960E /* Favorite_ViewModel.swift in Sources */,
 				29DD1CBA2C8C71AB0001ACC8 /* UStore_RepositoryImpl.swift in Sources */,
 				2965D7FC2C92AF3C006C72D6 /* LoggerManager.swift in Sources */,

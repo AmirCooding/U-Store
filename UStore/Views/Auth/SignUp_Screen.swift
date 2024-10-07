@@ -82,18 +82,7 @@ struct SignUp_Screen: View {
                                    }
                                }
                         
-                        /*
-                        PhotosPicker(selection: $selectedImage, matching: .images,photoLibrary: .shared()){
-                                Text("Add photo")
-                                .frame(width: 80, height: 80)
-                                .clipShape(Circle())
-                                .foregroundColor(Colors.secondary.color().opacity(0.2))
-                                .overlay(Circle()
-                                    .stroke(Colors.secondary.color().opacity(0.7), lineWidth: 2))
-                                  
-                                .shadow(radius: 5)
-                        }.padding(.top , 20)
-            */
+         
                     }
 
                     // Full Name TextField

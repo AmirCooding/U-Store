@@ -13,7 +13,7 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             Colors.secondary.color().opacity(0.3)
-                .ignoresSafeArea() // Ensure it covers the entire screen
+                .ignoresSafeArea()
             
             VStack {
                 ProgressView("Loading...")

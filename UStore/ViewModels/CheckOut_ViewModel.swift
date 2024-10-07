@@ -209,5 +209,10 @@ class CheckOut_ViewModel : ObservableObject{
         // Rückgabe der Formatierung: "4. Okt. bis 6. Okt."
         self.deliveryDate = "\(startDateString) - \(endDateString)"
     }
+    
+    // MARK: - Delete all Products for Current User  -
 
+    func deleteAllProductsForCurrentUser() async throws {
+       try await  repos.deleteAllProductsForCurrentUser()
+    }
 }

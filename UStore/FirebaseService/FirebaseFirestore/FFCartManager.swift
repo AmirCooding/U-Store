@@ -153,6 +153,24 @@ class FFCartManager  {
         self.carts = fetchCarts
     }
     
+    
+    // MARK: - Delete all products from the cart for the current user -
+       
+    func deleteAllProductsForCurrentUser() async throws {
+            guard let userId = Auth.auth().currentUser?.uid else {
+                print("No valid user ID to delete cart")
+                throw AuthError.invalidUser
+            }
+            LoggerManager.logInfo(" user id delete Cart -----------------> : \(userId)")
+
+            let snapshot = try await dbCollection.whereField("userId", isEqualTo: userId).getDocuments()
+
+            for document in snapshot.documents {
+                try await dbCollection.document(document.documentID).delete()
+            }
+            LoggerManager.logInfo("All cart items deleted for user ID: \(userId)")
+        }
+    
     // MARK: - Remove Cart Listener -
     func removeCartListener() {
         carts = []

@@ -42,6 +42,8 @@ struct UStore_RepositoryImpl : UStore_Repository{
     func deleteFavorite(favorite: Favorite) async throws {try await FFFavoriteManager.shared.deleteFavorite(favorite: favorite)}
     
     var fevoriets: AnyPublisher<[Favorite], Never> {FFFavoriteManager.shared.$favorites.eraseToAnyPublisher()}
+    func deleteAllProductsForCurrentUser() async throws { try await FFCartManager.shared.deleteAllProductsForCurrentUser()}
+    
     
     func removeFavoriteListener() {FFFavoriteManager.shared.removeFavoriteListener()}
 

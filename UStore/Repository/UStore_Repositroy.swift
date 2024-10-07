@@ -39,6 +39,7 @@ protocol UStore_Repository {
     func updateCartQuantity(productId: Int, newQuantity: Int) async throws
     func fetchAllProductsFromCart() async throws 
     func deleteCart(cart: CartItem) async throws
+    func deleteAllProductsForCurrentUser() async throws
     var carts : AnyPublisher<[CartItem], Never>  { get }
     func removeCartListener()
     
