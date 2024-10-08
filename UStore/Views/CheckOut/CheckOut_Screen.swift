@@ -9,10 +9,16 @@ import SwiftUI
 
 struct CheckOut_Screen: View {
     @StateObject private var viewModel = CheckOut_ViewModel()
+    @StateObject private var accountViewModel  = Account_ViewModel()
     @State private var isLoading: Bool = false
     @State private var showConfirmation: Bool = false
     @State private var navigateToHome: Bool = false
     @State private var isNavigating = false
+    @State private var showAddressAlert = false
+    @State private var showPaymentMethodeAlert = false
+    @State private var navigateToDeliveryAddress: Bool = false
+    @State private var navigateToPaymentMethode: Bool = false
+
 
     var body: some View {
         NavigationStack {
@@ -228,27 +234,59 @@ struct CheckOut_Screen: View {
                         
                         
                         CustomButton(text: "Pay", textColor: Colors.white.color(), backgroundColor: Colors.primary.color(), action: {
-                            isLoading = true
+                            if !viewModel.chckAddressISNotEmpty() {
+                                showAddressAlert = true
+                                return
+                            }
+                            
+                            if !viewModel.chckPaymentISNotEmpty(){
+                                showPaymentMethodeAlert = true
+                                return
+                            }
                             Task{
                              try await  viewModel.deleteAllProductsForCurrentUser()
                             }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation {
-                                    isLoading = false
-                                    showConfirmation = true
-                                }
                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    navigateToHome = true
-                      
+                                isLoading = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    withAnimation {
+                                        isLoading = false
+                                        showConfirmation = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        navigateToHome = true
+                                    }
                                 }
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                                 isNavigating = true 
-                             }
+                           
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                                     isNavigating = true
+                                 }
+                                
                         })
                         .padding()
                         .padding(.top, 50)
+               
+                                       .alert("Address cannot be empty!", isPresented: $showAddressAlert) {
+                                           Button("OK") {
+                                               navigateToDeliveryAddress = true
+                                           }
+                                       }
+                        /*
+                                       .navigationDestination(isPresented: $navigateToDeliveryAddress) {
+                                           DeliveryAddress_Screen().environmentObject(accountViewModel)
+                                       }
+                        */
+                                  
+                                       .alert("Payment method cannot be empty!", isPresented: $showPaymentMethodeAlert) {
+                                           Button("OK") {
+                                               navigateToPaymentMethode = true
+                                           }
+                                           /*
+                                           .navigationDestination(isPresented: $navigateToDeliveryAddress) {
+                                              PaymentMethods_Screen()
+                                           }
+                                            */
+                                       }
                     }.navigationTitle("CheckOut")
                         .padding(.vertical, 50)
                     
@@ -269,7 +307,13 @@ struct CheckOut_Screen: View {
                 NavigationLink(destination: Navigatoreator_Screen().navigationBarBackButtonHidden(true), isActive: $navigateToHome) {
                     EmptyView()
                 }
-          
+                NavigationLink(destination: DeliveryAddress_Screen().environmentObject(accountViewModel), isActive: $navigateToDeliveryAddress) {
+                    EmptyView()
+                }
+                
+                NavigationLink(destination: PaymentMethods_Screen().environmentObject(accountViewModel), isActive: $navigateToPaymentMethode) {
+                    EmptyView()
+                }
                 
             }
         }
@@ -278,6 +322,6 @@ struct CheckOut_Screen: View {
 
 #Preview {
     CheckOut_Screen()
-        .environmentObject(Cart_ViewModel())
+ 
 }
 

@@ -18,15 +18,19 @@ struct ConfirmationView: View {
             VStack {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(Colors.primary.color())
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.green)
+                    .padding(.bottom)
+                Divider()
                 
                 Text("Payment Confirmed!")
-                    .font(.title)
-                    .foregroundColor(Colors.primary.color())
+                    .font(GilroyFonts.font(style: .semiBold, size: 20))
+                    .foregroundColor(Colors.secondary.color())
                     .padding(.top, 10)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: 300, maxHeight: 200)
+            .background(Colors.white.color())
+                .cornerRadius(25)
         }
     }
 }

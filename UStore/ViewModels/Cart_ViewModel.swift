@@ -17,8 +17,6 @@ class Cart_ViewModel : ObservableObject{
     @Published var cartProducts: [Product] = []
     @Published var subPrices: [Int: String] = [:]
     @Published var totalCost: String = "0.00"
-    var scriptions = Set<AnyCancellable>()
-    
     @Published var carts   = [CartItem](){
         didSet{
             Task{
@@ -27,13 +25,13 @@ class Cart_ViewModel : ObservableObject{
             }
         }
     }
-  
-
+    
     init() {
         self.repos = UStore_RepositoryImpl()
      
-        repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
+       repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
     }
+    var scriptions = Set<AnyCancellable>()
     // MARK: - fetch all Product from Firestore and sent to screen -
     func fetchAllproductsCart() async throws {
         cartProducts.removeAll()

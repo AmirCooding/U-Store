@@ -11,7 +11,6 @@ import os
 
 @MainActor
 class Favorite_ViewModel: ObservableObject {
-    private var cartViewModel = Cart_ViewModel()
     private var repos : UStore_RepositoryImpl
     @Published var isLoading: Bool = false
     @Published var favoriteProducts: [Product] = []
@@ -28,7 +27,7 @@ class Favorite_ViewModel: ObservableObject {
 
     init() {
         repos = UStore_RepositoryImpl()
-        repos.fevoriets.assign(to: \.favorites , on: self).store(in: &scriptions)
+       repos.fevoriets.assign(to: \.favorites , on: self).store(in: &scriptions)
      
     }
     // MARK: - add Product to Cart -

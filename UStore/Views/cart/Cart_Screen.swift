@@ -8,56 +8,61 @@
 import SwiftUI
 
 struct Cart_Screen: View {
-    @StateObject private var viewModel   = Cart_ViewModel()
+    @StateObject private var viewModel = Cart_ViewModel()
     @State private var navigateToCheckout = false
+
     var body: some View {
         NavigationStack {
             ZStack {
-                
-                VStack{
-                    if viewModel.cartProducts.isEmpty{
+                VStack {
+                    if viewModel.cartProducts.isEmpty {
                         NoContentOverlay(
                             imageURL: URL(string: "https://i.pinimg.com/736x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg")!,
                             overlayText: ""
                         )
                     }
                 }
-                VStack{
+
+                VStack {
                     ScrollView {
-                        
                         VStack {
                             ForEach(viewModel.cartProducts) { product in
                                 CartCard_Screen(product: product)
                             }
                         }
-                
                     }
                     Spacer()
-                    HStack{
-                        HStack{
-                            Text("Total : ").font(GilroyFonts.font(style: .bold, size: 16))
-                            Text("\(viewModel.totalCost) ").font(GilroyFonts.font(style: .bold, size:17))
-                                .foregroundColor(Colors.primary.color())
-                        }.padding(.horizontal,30)
-                        Spacer()
+
+                    // Show the entire HStack (Total price and Checkout button) only if there are products in the cart
+                    if !viewModel.cartProducts.isEmpty {
                         HStack {
-                            NavigationLink(destination: CheckOut_Screen(), isActive: $navigateToCheckout) {
-                                     CustomButton(
-                                         text: "Checkout",
-                                         textColor: Colors.white.color(),
-                                         backgroundColor: Colors.primary.color(),
-                                         action: {
-                                             navigateToCheckout = true
-                                         }
-                                     )
-                                 }
-                             }
-                             .frame(width: 120, height: 60)
-                             .padding()
-                         
+                            HStack {
+                                Text("Total : ").font(GilroyFonts.font(style: .bold, size: 16))
+                                Text("\(viewModel.totalCost)").font(GilroyFonts.font(style: .bold, size: 17))
+                                    .foregroundColor(Colors.primary.color())
+                            }
+                            .padding(.horizontal, 30)
+
+                            Spacer()
+
+                            HStack {
+                                NavigationLink(destination: CheckOut_Screen(), isActive: $navigateToCheckout) {
+                                    CustomButton(
+                                        text: "Checkout",
+                                        textColor: Colors.white.color(),
+                                        backgroundColor: Colors.primary.color(),
+                                        action: {
+                                            navigateToCheckout = true
+                                        }
+                                    )
+                                }
+                            }
+                            .frame(width: 120, height: 60)
+                            .padding()
+                        }
+                        .background(Colors.secondary.color().opacity(0.07))
+                        .padding(.bottom, 2)
                     }
-                    .background(Colors.secondary.color().opacity(0.07))
-                    .padding(.bottom, 2)
                 }
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -65,25 +70,21 @@ struct Cart_Screen: View {
                             .font(GilroyFonts.font(style: .semiBold, size: 18))
                     }
                 }
-            
-            }
-        }.onAppear{
-            Task{
-               try await viewModel.fetchAllproductsCart()
             }
         }
-        
-            if viewModel.isLoading {
+        .onAppear {
+            Task {
+                try await viewModel.fetchAllproductsCart()
+            }
+        }
+
+        if viewModel.isLoading {
             LoadingView()
                 .edgesIgnoringSafeArea(.all)
         }
-            
     }
 }
 
-
 #Preview {
     Cart_Screen()
-       
-      
 }

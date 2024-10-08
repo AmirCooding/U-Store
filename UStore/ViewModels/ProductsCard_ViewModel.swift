@@ -12,7 +12,7 @@ class ProductCard_ViewModel: ObservableObject {
     private var repos: UStore_RepositoryImpl
     @Published var isLiked: Bool = false
     @Published var favorites: [Favorite] = []
-    @Published var carts   : [CartItem] = []
+    @Published var carts : [CartItem] = []
     private var subscriptions = Set<AnyCancellable>() // Store subscriptions here
     var scriptions = Set<AnyCancellable>()
     init() {
