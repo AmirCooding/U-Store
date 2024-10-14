@@ -26,18 +26,23 @@ class FFCartManager  {
     private init() {
         
         // Set up a snapshot listener to automatically update the carts list
-        listener = dbCollection.addSnapshotListener { snapshot, error in
-            if let error = error {
-                print("Error listening to Firestore: \(error)")
-                return
+        listener = dbCollection
+            .whereField("userId", isEqualTo: Auth.auth().currentUser?.uid ?? "")
+            .addSnapshotListener { snapshot, error in
+                if let error = error {
+                    print("Error listening to Firestore: \(error)")
+                    return
+                }
+                
+                let updatedCarts = snapshot?.documents.compactMap { snapshot in
+                    try? snapshot.data(as: CartItem.self)
+                } ?? []
+                // Send the updated carts through the Combine subject
+                self.subject.send(updatedCarts)
             }
-            
-            let updatedCarts = snapshot?.documents.compactMap { snapshot in
-                try? snapshot.data(as: CartItem.self)
-            } ?? []
-            // Send the updated carts through the Combine subject
-            self.subject.send(updatedCarts)
-        }
+
+     
+       
         
         // Subscribe to subject and update the local carts array when changes occur
         subject.sink { carts in

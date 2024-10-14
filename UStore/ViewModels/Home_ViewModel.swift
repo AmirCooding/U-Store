@@ -8,12 +8,12 @@
 import Foundation
 import Combine
 
-@Observable  class Home_ViewModel   {
-    var categories: [ProductCategory] = []
-    var products: [Product] = []
-    var productsForCategory : [Product] = []
-    var bestSeller: [Product] = []
-    var populerProducts: [Product] = []
+class Home_ViewModel  : ObservableObject  {
+   @Published var categories: [ProductCategory] = []
+   @Published var products: [Product] = []
+   @Published var productsForCategory : [Product] = []
+   @Published var bestSeller: [Product] = []
+   @Published var populerProducts: [Product] = []
     private var repos : UStore_RepositoryImpl
     
     init() {

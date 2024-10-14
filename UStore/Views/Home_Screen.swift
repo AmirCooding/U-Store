@@ -9,19 +9,19 @@ import SwiftUI
 
 struct Home_Screen: View {
     @State private var searchQuery: String = ""
-    var viewModel = Home_ViewModel()
+    @StateObject var viewModel = Home_ViewModel()
     @State private var selectedCategory: Category?
     
     var body: some View {
         NavigationStack {
             ScrollView (showsIndicators: false){
-                VStack(spacing: 20) {
+                VStack{
                     
                     Image("logo_image")
                         .resizable()
                         .frame(width: 200, height: 60)
                         .padding(.top ,30)
-                        .padding(.bottom ,10)
+                        .padding(.bottom ,30)
                     HStack{
                         TabView {
                             ForEach(viewModel.categories, id: \.id) { category in
@@ -38,7 +38,7 @@ struct Home_Screen: View {
                     
                     // Exclusive Offer Header
                     HStack {
-                        Text("BestSeller")
+                        Text("Best Seller")
                             .font(.headline)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
@@ -49,17 +49,18 @@ struct Home_Screen: View {
                             Text("See All")
                                 .foregroundColor(.blue)
                         }
-                    }
+                    }.padding(.top, 20)
                     .padding(.horizontal, 20)
                     
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack{
                             ForEach(viewModel.bestSeller, id: \.id) { offer in
-                                ProductCard(product: offer)
+                                ProductCard(product: offer).padding(.leading ,10)
                                 
-                            }.padding(.leading ,10)
-                        }
+                            }
+                        }.padding(.vertical)
+                            .padding(.leading ,10)
                         
                     }
                     
@@ -84,7 +85,8 @@ struct Home_Screen: View {
                                 ProductCard(product: offer)
                                 
                             }.padding(.leading, 10)
-                        }
+                        }.padding(.vertical)
+                            .padding(.leading ,10)
                         
                     }
                 }

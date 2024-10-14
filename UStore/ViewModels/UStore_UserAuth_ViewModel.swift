@@ -14,6 +14,9 @@ class UStore_UserAuth_ViewModel : ObservableObject{
     @Published var imageData: Data?
     @Published var authForm : AuthForme
     @Published var profile : UserProfile
+    @Published var cartItems: [CartItem] = []
+    @Published var favoriteItems: [Favorite] = []
+
     var email: String {
         get {
             return authForm.email
@@ -34,6 +37,7 @@ class UStore_UserAuth_ViewModel : ObservableObject{
     var userIsLogin: Bool {
         return repo.userIsLogin
     }
+    
 
     
     func handleLoginWithGoogle() async throws {
@@ -57,6 +61,7 @@ class UStore_UserAuth_ViewModel : ObservableObject{
     func handleLoginWithFacebook(){
         
     }
+    
     
     func handelSignIn() async throws {
         do {

@@ -34,32 +34,63 @@ class FAuthManager {
     
     }
     
-    
+    func resetDataBeforeLogin() throws {
+        FFCartManager.shared.carts = []
+        FFCartManager.shared.removeCartListener()
+        FFFavoriteManager.shared.favorites = []
+        FFFavoriteManager.shared.removeFavoriteListener()
+        FFUserProfileManager.shared.userProfile = UserProfile()
+        FFUserProfileManager.shared.removeProfileListener()
+
+        print("Previous user data cleared.")
+    }
+
+
     
     func signIn(email: String, password: String) async throws {
+     //  try  resetDataBeforeLogin()
         let authResult = try await auth.signIn(withEmail: email, password: password)
         guard let email = authResult.user.email else {
             throw AuthError.inValidEmail
         }
         self.user = authResult.user
-        FFUserManager.shared.fetchUser(id: authResult.user.uid) 
+      try await FetchDataAfterLogin(for: authResult.user.uid)
+
         print("User signed in successfully with \(email)")
     }
 
+ 
     
+    func FetchDataAfterLogin(for userId: String) async throws {
+        try await FFCartManager.shared.fetchAllProductsFromCart()
+        try await FFFavoriteManager.shared.fetchAllFavorites()
+        let userProfile = try await FFUserProfileManager.shared.fetchUserProfile()
+        print("Data reloaded for new user \(userId) with profile: \(userProfile.fullName).")
+    }
+
     
+    func resetDataBeforeLogout() {
+        FFCartManager.shared.removeCartListener()
+        FFFavoriteManager.shared.removeFavoriteListener()
+        FFUserProfileManager.shared.removeProfileListener()
+        print("All data reset before logout.")
+    }
+
     func signOut() throws {
         do {
+            resetDataBeforeLogout()
             try auth.signOut()
             self.user = nil
             print("User sign out succeeded!")
             error = ""
+
         } catch {
             self.error = AuthError.failedSignOut.localizedDescription
             print("\(self.error): \(error.localizedDescription)")
         }
     }
-    
+
+
     
     func resetPassword(email: String) async throws {
         do {
@@ -118,3 +149,5 @@ extension FAuthManager{
         return try await signIn(credential: credential)
     }
 }
+
+

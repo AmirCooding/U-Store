@@ -12,7 +12,7 @@ import os
 @MainActor
 class Cart_ViewModel : ObservableObject{
     private var repos : UStore_RepositoryImpl
-    @Published var isLoading: Bool = false
+    //@Published var isLoading: Bool = false
     @Published var productQuantities: [Int: Int] = [:]
     @Published var cartProducts: [Product] = []
     @Published var subPrices: [Int: String] = [:]
@@ -28,18 +28,21 @@ class Cart_ViewModel : ObservableObject{
     
     init() {
         self.repos = UStore_RepositoryImpl()
-     
        repos.carts.assign(to: \.carts , on: self).store(in: &scriptions)
     }
     var scriptions = Set<AnyCancellable>()
+    
     // MARK: - fetch all Product from Firestore and sent to screen -
+   
     func fetchAllproductsCart() async throws {
         cartProducts.removeAll()
-        self.isLoading = true
+       
+       // self.isLoading = true
         do {
             for cart in carts {
                 let product = try await repos.fetchProductById(productId: cart.ProductId)
                 DispatchQueue.main.async {
+               
                     self.cartProducts.append(product)
                     self.calculateQuantityPerproduct()
                 }
@@ -48,9 +51,11 @@ class Cart_ViewModel : ObservableObject{
             LoggerManager.logInfo("Failed to fetch products: \(error)")
             throw error
         }
+        /*
             DispatchQueue.main.async {
                 self.isLoading = false
             }
+         */
         LoggerManager.logInfo("Count the cartProducts in viewModel fetch All Products from Cart: ---------------- > \(cartProducts.count)")
     }
 

@@ -9,7 +9,12 @@ import Foundation
 import FirebaseFirestore
 
 struct UserAddress : Codable {
-    internal init(street: String = "", number: String = "", city: String = "", state: String? = "", zipCode: String = "", country: String? = "") {
+    internal init(street: String = "", 
+                  number: String = "",
+                  city: String = "", 
+                  state: String? = "",
+                  zipCode: String = "",
+                  country: String? = "") {
         self.street = street
         self.number = number
         self.city = city
@@ -18,9 +23,6 @@ struct UserAddress : Codable {
         self.country = country
     }
     
- 
-    
-  
     var street: String = ""
     var number : String = ""
     var city: String = ""

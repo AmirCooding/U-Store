@@ -27,21 +27,21 @@ class FFFavoriteManager  : ObservableObject{
    
     private init() {
         // Set up a snapshot listener to automatically update the carts list
-        listener = dbCollection.addSnapshotListener { snapshot, error in
-            if let error = error {
-                print("Error listening to Firestore: \(error)")
-                return
+        listener = dbCollection
+            .whereField("userId", isEqualTo: Auth.auth().currentUser?.uid ?? "")
+            .addSnapshotListener { snapshot, error in
+                if let error = error {
+                    print("Error listening to Firestore: \(error)")
+                    return
+                }
+                
+                let updatedFavorites = snapshot?.documents.compactMap { snapshot in
+                    try? snapshot.data(as: Favorite.self)
+                } ?? []
+                // Send the updated favorites through the Combine subject
+                self.subject.send(updatedFavorites)
             }
-     
-            let updatedFavorites = snapshot?.documents.compactMap { snapshot in
-                try? snapshot.data(as: Favorite.self)
-            } ?? []
-            
-            print("Fetched \(updatedFavorites.count) favorites from snapshot listener")
 
-            // Send the updated favorites through the Combine subject
-            self.subject.send(updatedFavorites)
-        }
         subject.sink { favorites in
             self.favorites = favorites
         }.store(in: &cancellables)

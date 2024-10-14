@@ -50,7 +50,10 @@ extension Product {
 
 extension Product {
     static var sample: Product {
-        Product(id: 1, title: "Sample Product", price: 99.99, description: "This is a sample product description.", category: .electronics, image: "https://cdn.corporatefinanceinstitute.com/assets/product-mix3.jpeg", rating: Rating(rate: 3.9, count: 34) )
+        Product(id: 1, title: "Sample Product",
+                price: 99.99, description: "This is a sample product description.",
+                category: .electronics, image: "https://cdn.corporatefinanceinstitute.com/assets/product-mix3.jpeg",
+                rating: Rating(rate: 3.9, count: 34) )
     }
 }
 

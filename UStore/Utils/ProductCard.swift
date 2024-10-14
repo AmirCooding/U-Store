@@ -86,14 +86,14 @@ struct ProductCard: View {
                 }
                 .background(Color.white)
                 .cornerRadius(12)
-                .shadow(radius: 5)
+                .shadow(radius: 1)
                 .frame(width: 150)
             }.onAppear{
                 Task{
                     try await viewModel.toggleColorFavoriteIcon(productId: product.id) 
                 }
             }
-            .padding()
+            
         }
     }
 }

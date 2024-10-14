@@ -9,7 +9,11 @@ import Foundation
 import FirebaseFirestore
 
 struct CartItem: Codable, Identifiable {
-    internal init(id: String? = nil, userId: String, ProductId: Int, isFreeShgiping: Bool = false, quantity: Int, productPrice: Double, deliveryPrice: Double) {
+    internal init(id: String? = nil, userId: String, 
+                  ProductId: Int, 
+                  isFreeShgiping: Bool = false,
+                  quantity: Int, productPrice: Double, 
+                  deliveryPrice: Double) {
         self.id = id
         self.userId = userId
         self.ProductId = ProductId
@@ -19,7 +23,6 @@ struct CartItem: Codable, Identifiable {
         self.deliveryPrice = deliveryPrice
     }
     
-
     @DocumentID var id: String?
     var userId: String
     var ProductId: Int
@@ -30,7 +33,6 @@ struct CartItem: Codable, Identifiable {
 
 }
 
-
 extension CartItem {
     var shippingCost : Double {
         isFreeShgiping ? deliveryPrice : 5.99
@@ -38,5 +40,8 @@ extension CartItem {
     
 
 }
+
+
+
 
 

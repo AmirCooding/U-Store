@@ -23,10 +23,8 @@ import os
     
     init() {
         repos = UStore_RepositoryImpl()
-     
         authForm = AuthForme()
         repos.userProfile
-            .receive(on: DispatchQueue.main)
             .assign(to: \.profile, on: self)
             .store(in: &scriptions)
         Task{
@@ -104,10 +102,16 @@ import os
     }
     
      // MARK: - Remove Listener and Signout -
-    func handelSignOut() throws{
-        repos.removeCartListener()
-        repos.removeFavoriteListener()
-        repos.removeProfileListener()
+     
+     func resetDataBeforeLogout() {
+         FFCartManager.shared.removeCartListener()
+         FFFavoriteManager.shared.removeFavoriteListener()
+         FFUserProfileManager.shared.removeProfileListener()
+         print("All data reset before logout.")
+     }
+
+     func handelSignOut() throws{
+       //  resetDataBeforeLogout()
         try repos.signOut()
         authForm.navigateToView = true
     }

@@ -8,7 +8,9 @@
 import Foundation
 
 struct AuthForme : Codable , Equatable{
-    internal init(email: String = "", password: String = "", confirmPassword: String = "", showAlert: Bool = false, alertMessage: String = "", isLoading: Bool = false, navigateToView: Bool = false, isTermsAccepted: Bool = false) {
+    internal init(email: String = "", password: String = "", confirmPassword: String = "", 
+                  showAlert: Bool = false, alertMessage: String = "", isLoading: Bool = false,
+                  navigateToView: Bool = false, isTermsAccepted: Bool = false) {
         self.email = email
         self.password = password
         self.confirmPassword = confirmPassword
@@ -29,3 +31,4 @@ struct AuthForme : Codable , Equatable{
        var navigateToView: Bool = false
        var isTermsAccepted: Bool = false
 }
+

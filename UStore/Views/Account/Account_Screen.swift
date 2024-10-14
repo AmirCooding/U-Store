@@ -15,13 +15,15 @@ struct Account_Screen: View {
         NavigationStack {
             VStack(spacing: 0) {
                 HStack(alignment: .center) {
+                    HStack {
                     if let imageData = viewModel.imageData,
                        let uiImage = UIImage(data: imageData) {
+                        
                         Image(uiImage: uiImage)
                             .resizable()
                             .frame(width: 80, height: 80)
                             .clipShape(Circle())
-                           
+                        
                     } else {
                         ZStack {
                             Circle()
@@ -34,7 +36,12 @@ struct Account_Screen: View {
                                 .foregroundColor(.white)
                         }
                     }
-                    
+                    }.onAppear {
+                        Task{
+                            try await  viewModel.fetchImageProfile()
+                        }
+                    }
+                
                     VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.profile.fullName.isEmpty ? "NO Name for user" : viewModel.profile.fullName)
                             .font(GilroyFonts.font(style: .bold, size: 24))
@@ -126,6 +133,9 @@ struct Account_Screen: View {
                     iconColor: Colors.white.color(),
                     backgroundColor: Colors.error.color(),
                     action: {
+                      // FFCartManager.shared.removeCartListener()
+                      // FFFavoriteManager.shared.removeFavoriteListener()
+                     //  FFUserProfileManager.shared.removeProfileListener()
                         Task {
                             try viewModel.handelSignOut()
                         }
@@ -139,7 +149,6 @@ struct Account_Screen: View {
                 }
                 
             }
-         
             .navigationTitle("Account")
         }
     }

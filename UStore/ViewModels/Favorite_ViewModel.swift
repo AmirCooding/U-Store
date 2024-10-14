@@ -35,6 +35,7 @@ class Favorite_ViewModel: ObservableObject {
     func fetchFavoritesAndProducts() async throws {
         self.isLoading = true
         favoriteProducts.removeAll()
+       // favorites.removeAll()
         for favorite in favorites {
             let product = try await repos.fetchProductById(productId: favorite.ProductId)
             favoriteProducts.append(product)

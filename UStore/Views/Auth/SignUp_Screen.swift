@@ -34,7 +34,7 @@ struct SignUp_Screen: View {
                         VStack{
                             
                             Text("Create an Account")
-                                .font(GilroyFonts.font(style: .semiBold, size: 26))
+                                .font(GilroyFonts.font(style: .semiBold, size: 24))
                                 .foregroundColor(Colors.black.color())
                                 .padding(.top, 20)
                             

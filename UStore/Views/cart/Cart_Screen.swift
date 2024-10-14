@@ -74,14 +74,15 @@ struct Cart_Screen: View {
         }
         .onAppear {
             Task {
-                try await viewModel.fetchAllproductsCart()
+              // try await viewModel.fetchAllproductsCart()
             }
         }
-
-        if viewModel.isLoading {
+/*
+        if viewModel.repos. {
             LoadingView()
                 .edgesIgnoringSafeArea(.all)
         }
+ */
     }
 }
 
